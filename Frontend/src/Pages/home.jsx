@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -31,10 +31,51 @@ import '@splidejs/react-splide/css';
 
 const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  // Hero slideshow images
+  const heroImages = [
+    {
+      src: './src/assets/images/MountKinabalu.png',
+      title: 'Mount Kinabalu',
+      subtitle: 'Malaysia\'s Highest Peak'
+    },
+    {
+      src: './src/assets/images/KK.jpeg',
+      title: 'Kota Kinabalu',
+      subtitle: 'Capital of Sabah'
+    },
+    {
+      src: './src/assets/images/pulausipadan.jpg',
+      title: 'Pulau Sipadan',
+      subtitle: 'World-Class Diving'
+    },
+    {
+      src: './src/assets/images/tanjungaru.jpg',
+      title: 'Tanjung Aru Beach',
+      subtitle: 'Sunset Paradise'
+    },
+    {
+      src: './src/assets/images/tipofborneo.jpg',
+      title: 'Tip of Borneo',
+      subtitle: 'Northern Edge of Borneo'
+    }
+  ];
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % heroImages.length
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
 
   // Sample events data
   const events = [
@@ -154,20 +195,40 @@ const Home = () => {
       {/* Sidebar */}
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Hero Section with Mount Kinabalu */}
+      {/* Hero Section with Slideshow */}
       <Box
         sx={{
           height: '100vh',
-          backgroundImage: 'url(./src/assets/images/MountKinabalu.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          position: 'relative',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          position: 'relative',
-          '&::before': {
-            content: '""',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Background Images */}
+        {heroImages.map((image, index) => (
+          <Box
+            key={index}
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${image.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: index === currentImageIndex ? 1 : 0,
+              transition: 'opacity 1.5s ease-in-out',
+              zIndex: 0
+            }}
+          />
+        ))}
+        
+        {/* Dark overlay */}
+        <Box
+          sx={{
             position: 'absolute',
             top: 0,
             left: 0,
@@ -175,9 +236,9 @@ const Home = () => {
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.4)',
             zIndex: 1
-          }
-        }}
-      >
+          }}
+        />
+        {/* Content overlay */}
         <Box sx={{ position: 'relative', zIndex: 2, textAlign: 'center', px: { xs: 2, md: 4 } }}>
           <Typography
             variant="h1"
@@ -186,7 +247,8 @@ const Home = () => {
               fontWeight: 800,
               fontSize: { xs: '2.5rem', md: '4rem', lg: '5rem' },
               textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
-              mb: 2
+              mb: 2,
+              transition: 'all 0.8s ease-in-out'
             }}
           >
             Discover Sabah
@@ -198,11 +260,26 @@ const Home = () => {
               fontWeight: 400,
               fontSize: { xs: '1.2rem', md: '1.8rem' },
               textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
-              mb: 4,
-              opacity: 0.9
+              mb: 1,
+              opacity: 0.9,
+              transition: 'all 0.8s ease-in-out'
             }}
           >
             Land Below the Wind
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              color: 'white',
+              fontWeight: 300,
+              fontSize: { xs: '1rem', md: '1.2rem' },
+              textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
+              mb: 4,
+              opacity: 0.8,
+              transition: 'all 0.8s ease-in-out'
+            }}
+          >
+            {heroImages[currentImageIndex].subtitle}
           </Typography>
           <Button
             variant="contained"

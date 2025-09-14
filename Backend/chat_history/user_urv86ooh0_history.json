@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2025-09-15T04:35:29.751153",
+    "user_message": "hello",
+    "ai_response": "Hello! Planning a trip to Sabah? I'd be happy to help!",
+    "type": "casual"
+  },
+  {
+    "timestamp": "2025-09-15T04:35:46.213085",
+    "user_message": "where can i find butod in KK ?",
+    "ai_response": "Ah, you're looking for butod! You can usually find it at local markets like the Sunday Gaya Street Market or the night market at Sedco Square in Kota Kinabalu. Enjoy your adventurous snack!",
+    "type": "casual"
+  }
+]

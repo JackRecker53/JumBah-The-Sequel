@@ -1,0 +1,129 @@
+[
+  {
+    "id": "kk-001",
+    "title": "Gaya Street Explorer",
+    "district": "kk",
+    "type": "qr",
+    "image": "./src/assets/images/KK.jpeg",
+    "reward": {
+      "type": "stamp",
+      "name": "Gaya Scout"
+    },
+    "qr_secret": "sunrise2025",
+    "description": "Find the heritage mural and scan the QR to learn its story."
+  },
+  {
+    "id": "kk-002",
+    "title": "Seaside Sunset Snap",
+    "district": "kk",
+    "type": "photo",
+    "image": "./src/assets/images/tanjungaru.jpg",
+    "reward": {
+      "type": "stamp",
+      "name": "Sunset Chaser"
+    },
+    "description": "Capture a photo near Tanjung Aru beach during golden hour."
+  },
+  {
+    "id": "kk-003",
+    "title": "Market Hunt",
+    "district": "kk",
+    "type": "qr",
+    "image": "./src/assets/images/KK.jpeg",
+    "reward": {
+      "type": "stamp",
+      "name": "Market Maven"
+    },
+    "qr_secret": "pasar2025",
+    "description": "Find a friendly vendor QR at the Filipino Market and scan it."
+  },
+  {
+    "id": "kk-004",
+    "title": "Sabah Phrase Challenge",
+    "district": "kk",
+    "type": "audio",
+    "image": "./src/assets/images/KK.jpeg",
+    "reward": {
+      "type": "stamp",
+      "name": "Language Learner"
+    },
+    "description": "Learn to say a local greeting and record your best take."
+  },
+  {
+    "id": "kk-005",
+    "title": "Mount Kinabalu Trivia",
+    "district": "kk",
+    "type": "trivia",
+    "image": "./src/assets/images/MountKinabalu.png",
+    "reward": {
+      "type": "stamp",
+      "name": "Mountain Master"
+    },
+    "description": "Test your knowledge about Malaysia's highest peak.",
+    "trivia": [
+      {
+        "q": "What is the height of Mount Kinabalu?",
+        "a": "4,095 meters (13,435 feet)"
+      },
+      {
+        "q": "What does 'Kinabalu' mean in the local language?",
+        "a": "Chinese Widow - from 'Aki Nabalu' meaning the revered place of the dead"
+      },
+      {
+        "q": "When was Mount Kinabalu designated as a UNESCO World Heritage Site?",
+        "a": "2000"
+      }
+    ]
+  },
+  {
+    "id": "sipadan-001",
+    "title": "Diving Paradise Quest",
+    "district": "sipadan",
+    "type": "photo",
+    "image": "./src/assets/images/pulausipadan.jpg",
+    "reward": {
+      "type": "stamp",
+      "name": "Dive Explorer"
+    },
+    "description": "Capture the beauty of Sipadan's crystal clear waters."
+  },
+  {
+    "id": "borneo-001",
+    "title": "Tip of Borneo Adventure",
+    "district": "borneo",
+    "type": "qr",
+    "image": "./src/assets/images/tipofborneo.jpg",
+    "reward": {
+      "type": "stamp",
+      "name": "Edge Walker"
+    },
+    "qr_secret": "northernmost2025",
+    "description": "Reach the northernmost tip of Borneo and scan the landmark QR."
+  },
+  {
+    "id": "culture-001",
+    "title": "Sabahan Culture Quiz",
+    "district": "kk",
+    "type": "trivia",
+    "image": "./src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg",
+    "reward": {
+      "type": "stamp",
+      "name": "Culture Keeper"
+    },
+    "description": "Learn about the rich cultural heritage of Sabah.",
+    "trivia": [
+      {
+        "q": "What is the traditional harvest festival of Sabah called?",
+        "a": "Kaamatan Festival"
+      },
+      {
+        "q": "How many indigenous ethnic groups are there in Sabah?",
+        "a": "Over 30 different ethnic groups"
+      },
+      {
+        "q": "What is the traditional Sabahan greeting?",
+        "a": "Kotobian (Good day/Hello)"
+      }
+    ]
+  }
+]

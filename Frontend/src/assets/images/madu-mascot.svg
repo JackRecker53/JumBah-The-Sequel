@@ -1,0 +1,68 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bear body -->
+  <ellipse cx="60" cy="85" rx="35" ry="25" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  
+  <!-- Bear head -->
+  <circle cx="60" cy="50" r="28" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  
+  <!-- Left ear -->
+  <circle cx="45" cy="30" r="12" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  <circle cx="45" cy="30" r="7" fill="#ff8c42"/>
+  
+  <!-- Right ear -->
+  <circle cx="75" cy="30" r="12" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  <circle cx="75" cy="30" r="7" fill="#ff8c42"/>
+  
+  <!-- Headphones band -->
+  <path d="M 35 35 Q 60 15 85 35" stroke="#6b7280" stroke-width="4" fill="none" stroke-linecap="round"/>
+  
+  <!-- Left headphone -->
+  <circle cx="40" cy="40" r="8" fill="#6b7280" stroke="#4b5563" stroke-width="2"/>
+  <circle cx="40" cy="40" r="5" fill="#374151"/>
+  
+  <!-- Right headphone -->
+  <circle cx="80" cy="40" r="8" fill="#6b7280" stroke="#4b5563" stroke-width="2"/>
+  <circle cx="80" cy="40" r="5" fill="#374151"/>
+  
+  <!-- Microphone arm -->
+  <path d="M 40 48 Q 35 55 30 60" stroke="#6b7280" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Microphone -->
+  <circle cx="28" cy="62" r="3" fill="#374151"/>
+  
+  <!-- Orange chest marking (V-shape) -->
+  <path d="M 45 65 L 60 75 L 75 65 L 70 80 L 60 85 L 50 80 Z" fill="#ff8c42"/>
+  
+  <!-- Eyes -->
+  <circle cx="52" cy="45" r="4" fill="#ff8c42"/>
+  <circle cx="68" cy="45" r="4" fill="#ff8c42"/>
+  <circle cx="52" cy="45" r="2" fill="#1f2937"/>
+  <circle cx="68" cy="45" r="2" fill="#1f2937"/>
+  
+  <!-- Eye highlights -->
+  <circle cx="53" cy="44" r="1" fill="white"/>
+  <circle cx="69" cy="44" r="1" fill="white"/>
+  
+  <!-- Nose -->
+  <ellipse cx="60" cy="52" rx="3" ry="2" fill="#2d2d2d"/>
+  
+  <!-- Mouth -->
+  <path d="M 55 58 Q 60 62 65 58" stroke="#2d2d2d" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Paws -->
+  <circle cx="35" cy="95" r="8" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  <circle cx="85" cy="95" r="8" fill="#4a4a4a" stroke="#2d2d2d" stroke-width="2"/>
+  
+  <!-- Paw pads -->
+  <circle cx="35" cy="95" r="4" fill="#ff8c42"/>
+  <circle cx="85" cy="95" r="4" fill="#ff8c42"/>
+  
+  <!-- Small paw details -->
+  <circle cx="32" cy="92" r="1.5" fill="#2d2d2d"/>
+  <circle cx="38" cy="92" r="1.5" fill="#2d2d2d"/>
+  <circle cx="35" cy="98" r="1.5" fill="#2d2d2d"/>
+  
+  <circle cx="82" cy="92" r="1.5" fill="#2d2d2d"/>
+  <circle cx="88" cy="92" r="1.5" fill="#2d2d2d"/>
+  <circle cx="85" cy="98" r="1.5" fill="#2d2d2d"/>
+</svg>

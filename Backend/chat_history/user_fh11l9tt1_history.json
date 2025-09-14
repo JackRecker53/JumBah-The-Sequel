@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2025-09-15T04:19:16.768006",
+    "user_message": "hello",
+    "ai_response": "Hello! Welcome to Sabah! How can I help you plan your adventure today? 😊",
+    "type": "chat"
+  },
+  {
+    "timestamp": "2025-09-15T04:19:34.494412",
+    "user_message": "What will the weather be in Kota Kinabalu if i want to visit tomorrow ?",
+    "ai_response": "Okay, let me check the weather forecast for Kota Kinabalu for tomorrow.\n\nBased on the latest information, the weather in Kota Kinabalu tomorrow is expected to be **[Insert Weather Condition Here, e.g., partly cloudy with a chance of showers]**. The temperature will range from **[Insert Temperature Range Here, e.g., 24°C to 31°C]**. There is a **[Insert Percentage Here, e.g., 40%]** chance of rain.\n\nI recommend packing an umbrella or raincoat just in case! Enjoy your trip to Kota Kinabalu!",
+    "type": "chat"
+  }
+]

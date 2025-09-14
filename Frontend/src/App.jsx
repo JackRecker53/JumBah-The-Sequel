@@ -5,7 +5,7 @@ import Home from './Pages/Home';
 import AIPlanner from './Pages/AIPlanner';
 import Map from './Pages/map';
 import Game from './Pages/game';
-import './App.css';
+// import './App.css'; // Temporarily disabled due to loading issues
 
 function App() {
   return (
