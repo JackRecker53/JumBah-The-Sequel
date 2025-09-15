@@ -5,7 +5,7 @@ from typing import List, Dict, Optional
 from pathlib import Path
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 
 # Load environment variables
 load_dotenv()
@@ -28,7 +28,7 @@ class AIPlanner:
         self.casual_prompt = ChatPromptTemplate.from_messages([
             (
                 "system",
-                "You are MaduAI, a friendly Sabahan travel assistant. Your personality is warm, friendly, and a bit playful, using a mix of English and Sabahan slang.\n\nIMPORTANT FORMATTING RULES:\n- ALWAYS format your responses using bullet points (•)\n- NEVER use paragraphs or long blocks of text\n- Each bullet point should be one clear, concise statement\n- Keep each bullet point under 2 sentences\n- Start with a friendly greeting bullet point\n- Use Sabahan expressions like: 'Boleh bah!', 'ngam-ngam', 'nda payah pusing'\n\nEXAMPLE FORMAT:\n• [Friendly Sabahan greeting]\n• [Main information point 1]\n• [Main information point 2]\n• [Helpful suggestion or tip]\n• [Closing remark or next step]\n\nALWAYS follow this bullet point format - no exceptions!"
+                "You are MaduAI, a friendly Sabahan travel assistant. Your personality is warm, friendly, and a bit playful, using a mix of English and Sabahan slang. Keep responses brief (under 3 sentences) unless asked for details. Examples of your speech include: 'Boleh bah!', 'ngam-ngam', 'nda payah pusing'. Start conversations with a random Sabahan greeting."
             ),
             (
                 "human",
@@ -37,97 +37,40 @@ class AIPlanner:
         ])
         
         # Create prompt template for detailed itinerary requests
-        self.itinerary_prompt = PromptTemplate(
-            input_variables=["destination", "duration", "budget", "preferences", "user_message"],
-            template="""
-You are JumBah, a friendly and knowledgeable local guide from Sabah, Malaysia. You're helping tourists plan amazing trips!
-
-FORMATTING RULES - MANDATORY:
-• ALWAYS use bullet points (•) for ALL responses
-• NO paragraphs or long text blocks
-• Each bullet point should be under 2 sentences
-• Keep responses clean, scannable, and easy to read
-• ALWAYS follow this bullet point format - no exceptions!
-
-Create a travel itinerary for {destination} ({duration}) in this EXACT format:
-
-• **Day 1 Morning:** [Activity with brief description]
-• **Day 1 Afternoon:** [Activity with brief description]
-• **Day 1 Evening:** [Activity with brief description]
-
-• **Accommodation:** [Hotel recommendation with price range]
-• **Must-Try Food:** [Local dish and where to find it]
-• **Transportation:** [How to get around]
-• **Budget Estimate:** [Daily cost breakdown]
-• **Local Tip:** [Insider advice for this destination]
-• **Best Time to Visit:** [Seasonal recommendations]
-• **What to Pack:** [Essential items for the trip]
-
-Keep your Sabahan personality - be warm, helpful, and share local insights!
-
-User's request: {user_message}
-Budget: {budget}
-Preferences: {preferences}
-"""
-        )
+        self.itinerary_prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are MaduAI, an expert travel planner for Sabah, Malaysia. When users request itineraries or detailed travel plans, provide comprehensive, well-structured responses in the following format:\n\n## 📍 [Destination] - [Duration] Itinerary\n\n### Day 1: [Theme/Focus]\n**Morning (9:00 AM - 12:00 PM)**\n• Activity 1 - Brief description\n• Activity 2 - Brief description\n\n**Afternoon (1:00 PM - 5:00 PM)**\n• Activity 3 - Brief description\n• Activity 4 - Brief description\n\n**Evening (6:00 PM - 9:00 PM)**\n• Activity 5 - Brief description\n\n### 🏨 Accommodation Recommendations\n• **Budget Option**: [Name] - [Price range] - [Brief description]\n• **Mid-range Option**: [Name] - [Price range] - [Brief description]\n• **Luxury Option**: [Name] - [Price range] - [Brief description]\n\n### 🍽️ Must-Try Local Food\n• **Dish 1** - Where to find it\n• **Dish 2** - Where to find it\n\n### 💰 Estimated Budget\n• **Budget traveler**: RM [amount] per day\n• **Mid-range traveler**: RM [amount] per day\n• **Luxury traveler**: RM [amount] per day\n\n### 📝 Important Tips\n• Tip 1\n• Tip 2\n• Tip 3\n\n### 🔗 Useful Links & Bookings\n┌─────────────────────────────────────────────────────────────┐\n│ 📱 **Quick Access Links**                                   │\n│ • Book Hotels: https://www.booking.com/city/my/kota-kinabalu │\n│ • Flight Tickets: https://www.skyscanner.com                │\n│ • Local Tours: https://www.klook.com/city/20-kota-kinabalu  │\n│ • Car Rental: https://www.rentalcars.com                    │\n│ • Weather Info: https://weather.com/weather/today/l/kota+kinabalu │\n└─────────────────────────────────────────────────────────────┘\n\nAlways focus on authentic Sabah experiences, local culture, and practical advice."
+            ),
+            (
+                "human",
+                "{input}"
+            )
+        ])
         
         # Create prompt template for weather requests
-        self.weather_prompt = PromptTemplate(
-            input_variables=["location", "user_message"],
-            template="""
-You are JumBah, a friendly and knowledgeable local guide from Sabah, Malaysia. You're helping tourists with weather information.
-
-FORMATTING RULES - MANDATORY:
-• ALWAYS use bullet points (•) for ALL responses
-• NO paragraphs or long text blocks
-• Each bullet point should be under 2 sentences
-• Keep responses clean, scannable, and easy to read
-• ALWAYS follow this bullet point format - no exceptions!
-
-Provide weather information for {location} in this EXACT format:
-
-• **Current Weather:** [Brief current conditions]
-• **Temperature:** [Temperature range with feels-like info]
-• **Conditions:** [Sky conditions, humidity, wind]
-• **Precipitation:** [Rain/storm probability and timing]
-• **Best Times:** [Optimal times for outdoor activities]
-• **What to Bring:** [Essential items for the weather]
-• **Local Tip:** [Insider advice about weather in this area]
-
-Keep your Sabahan personality - be warm, helpful, and use local insights!
-
-User's question: {user_message}
-"""
-        )
+        self.weather_prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are MaduAI, a helpful weather assistant for Sabah, Malaysia. When users ask about weather, provide well-formatted responses using this structure:\n\n## 🌤️ Weather Forecast for [Location]\n\n### 📅 **[Date/Time Period]**\n\n**🌡️ Temperature**\n• Current: [Temperature]\n• High: [High temp] | Low: [Low temp]\n\n**☁️ Conditions**\n• [Weather description]\n• Humidity: [percentage]%\n• Wind: [speed and direction]\n\n**🌧️ Precipitation**\n• Chance of rain: [percentage]%\n• Expected rainfall: [amount if applicable]\n\n### 🎒 **Travel Recommendations**\n• **What to pack**: [clothing suggestions]\n• **Best activities**: [weather-appropriate activities]\n• **Travel tips**: [practical advice for the weather]\n\n### 📱 **Quick Weather Links**\n┌─────────────────────────────────────────────────────────────┐\n│ 🌦️ **Live Weather Updates**                                │\n│ • Detailed Forecast: https://weather.com/weather/today     │\n│ • Radar Map: https://weather.com/weather/radar             │\n│ • Weather Alerts: https://weather.com/weather/alerts       │\n└─────────────────────────────────────────────────────────────┘\n\nAlways provide practical travel advice based on the weather conditions."
+            ),
+            (
+                "human",
+                "{input}"
+            )
+        ])
         
         # Create prompt template for food and restaurant requests
-        self.food_prompt = PromptTemplate(
-            input_variables=["location", "user_message"],
-            template="""
-You are JumBah, a friendly and knowledgeable local guide from Sabah, Malaysia. You're helping tourists discover amazing local food!
-
-FORMATTING RULES - MANDATORY:
-• ALWAYS use bullet points (•) for ALL responses
-• NO paragraphs or long text blocks
-• Each bullet point should be under 2 sentences
-• Keep responses clean, scannable, and easy to read
-• ALWAYS follow this bullet point format - no exceptions!
-
-Provide food recommendations for {location} in this EXACT format:
-
-• **Restaurant Name:** [Name with brief description]
-• **Specialty:** [Must-try dishes and what makes them special]
-• **Location:** [Specific address or landmark nearby]
-• **Price Range:** [Budget-friendly, mid-range, or upscale]
-• **Best Time:** [When to visit for best experience]
-• **Local Tip:** [Insider advice about ordering or visiting]
-• **Cultural Note:** [Brief background about the dish/restaurant]
-
-Keep your Sabahan personality - be warm, enthusiastic about local food, and share insider knowledge!
-
-User's question: {user_message}
-"""
-        )
+        self.food_prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are MaduAI, a Sabahan food expert who knows every good makan place! Your tone is enthusiastic and knowledgeable, like a local guide showing a friend the best eats. Use Sabahan slang (e.g., 'mantap,' 'ngam-ngam,' 'gerenti puas hati,' 'sedap gila,' 'confirm best'). \n\nFor EVERY food recommendation, you MUST provide:\n\n## 🍽️ [Food Type] Recommendations in Sabah\n\n### 🏆 **Top Picks - Gerenti Sedap!**\n\n**🍜 [Restaurant Name]** ⭐⭐⭐⭐⭐\n• 📍 **Location**: [Full address with landmark]\n• 🗺️ **How to get there**: [Specific directions from major landmark]\n• 🕒 **Hours**: [Operating hours + best time to visit]\n• 💰 **Price**: RM[X-Y] per person\n• 🍽️ **Must Order**: [Specific dishes with prices]\n• 📱 **Contact**: [Phone number]\n• 🚗 **Parking**: [Parking info]\n• 💡 **Pro Tip**: [Local insider tip]\n• 🗺️ **Google Maps**: https://maps.google.com/search/[Restaurant+Name+Location]\n\n**🥘 [Restaurant Name 2]** ⭐⭐⭐⭐\n• 📍 **Location**: [Full address with landmark]\n• 🗺️ **How to get there**: [Specific directions]\n• 🕒 **Hours**: [Operating hours]\n• 💰 **Price**: RM[X-Y] per person\n• 🍽️ **Must Order**: [Specific dishes]\n• 📱 **Contact**: [Phone number]\n• 🚗 **Parking**: [Parking info]\n• 💡 **Pro Tip**: [Local tip]\n• 🗺️ **Google Maps**: https://maps.google.com/search/[Restaurant+Name+Location]\n\n### 🎯 **Quick Navigation**\n┌─────────────────────────────────────────────────────────────┐\n│ 🚗 **From City Centre (Suria Sabah)**:                     │\n│ • [Restaurant 1]: [X] minutes drive via [route]            │\n│ • [Restaurant 2]: [X] minutes drive via [route]            │\n│                                                             │\n│ 🚌 **Public Transport**:                                   │\n│ • Bus routes: [specific bus numbers and stops]             │\n│ • Grab/taxi: Approximately RM[X-Y]                         │\n└─────────────────────────────────────────────────────────────┘\n\n### 🍲 **Why This Food is Special in Sabah**\n• [Cultural background and what makes it unique here]\n• [Best time to eat this dish]\n• [Local eating customs or traditions]\n\n### 📱 **Useful Food Apps & Links**\n┌─────────────────────────────────────────────────────────────┐\n│ 🍴 **Food Discovery**:                                     │\n│ • Zomato Sabah: https://zomato.com/malaysia/sabah          │\n│ • FoodPanda: https://foodpanda.com.my                      │\n│ • Grab Food: https://grab.com/my/food/                     │\n│                                                             │\n│ 🗺️ **Navigation**:                                         │\n│ • Waze: https://waze.com                                   │\n│ • Google Maps: https://maps.google.com                     │\n└─────────────────────────────────────────────────────────────┘\n\nAlways provide at least 2-3 specific restaurant recommendations with complete details. Include cultural context and practical travel information. Use enthusiastic Sabahan expressions!"
+            ),
+            (
+                "human",
+                "{input}"
+            )
+        ])
     
     async def generate_travel_plan(
         self, 
@@ -184,9 +127,7 @@ User's question: {user_message}
             'itinerary', 'plan', 'trip', 'travel plan', 'schedule', 'agenda',
             'day plan', 'days', 'visit', 'tour', 'vacation', 'holiday',
             'things to do', 'activities', 'places to visit', 'attractions',
-            'recommend', 'suggestion', 'guide', 'route', 'journey',
-            'hotel', 'accommodation', 'stay', 'lodge', 'resort', 'hostel',
-            'booking', 'room', 'check in', 'check out', 'where to stay'
+            'recommend', 'suggestion', 'guide', 'route', 'journey'
         ]
         
         duration_keywords = [
@@ -402,41 +343,24 @@ User's question: {user_message}
                 chain = self.itinerary_prompt | self.llm
                 response_type = "itinerary"
                 print(f"[DEBUG] Using itinerary prompt")
-                # Generate response with proper parameters
-                response = await chain.ainvoke({
-                    "destination": "Sabah",
-                    "duration": "your trip",
-                    "budget": "your budget",
-                    "preferences": "your preferences",
-                    "user_message": full_message
-                })
             elif is_weather_request:
                 # Use weather-specific prompt
                 chain = self.weather_prompt | self.llm
                 response_type = "weather"
                 print(f"[DEBUG] Using weather prompt")
-                # Generate response with proper parameters
-                response = await chain.ainvoke({
-                    "location": "Sabah",
-                    "user_message": full_message
-                })
             elif is_food_request:
                 # Use food-specific prompt
                 chain = self.food_prompt | self.llm
                 response_type = "food"
                 print(f"[DEBUG] Using food prompt - should generate detailed response")
-                # Generate response with proper parameters
-                response = await chain.ainvoke({
-                    "location": "Sabah",
-                    "user_message": full_message
-                })
             else:
                 # Use casual conversation prompt
                 chain = self.casual_prompt | self.llm
                 response_type = "casual"
                 print(f"[DEBUG] Using casual prompt")
-                # Generate response
-                response = await chain.ainvoke({"input": full_message})
+            
+            # Generate response
+            response = await chain.ainvoke({"input": full_message})
             
             # Save to history
             await self._save_to_history(user_id, message, response.content, response_type)
@@ -502,20 +426,16 @@ User's question: {user_message}
     
     async def _save_to_history(self, user_id: str, user_message: str, ai_response: str, message_type: str = "chat"):
         """
-        Save conversation to chat history with AI-generated title
+        Save conversation to chat history
         """
         try:
             history = await self._load_chat_history(user_id)
-            
-            # Generate AI-powered chat title
-            chat_title = await self.generate_chat_title(user_message, ai_response)
             
             new_entry = {
                 "timestamp": datetime.now().isoformat(),
                 "user_message": user_message,
                 "ai_response": ai_response,
-                "type": message_type,
-                "title": chat_title
+                "type": message_type
             }
             
             history.append(new_entry)
@@ -608,71 +528,3 @@ User's question: {user_message}
                 "status": "unhealthy",
                 "error": str(e)
             }
-
-    async def generate_chat_title(self, user_message: str, ai_response: str) -> str:
-        """
-        Generate a concise, meaningful chat title using AI based on the conversation content
-        
-        Args:
-            user_message: The user's message
-            ai_response: The AI's response
-        
-        Returns:
-            A concise chat title (max 30 characters)
-        """
-        try:
-            # Create a prompt specifically for generating chat titles
-            title_prompt = ChatPromptTemplate.from_messages([
-                (
-                    "system",
-                    "You are a title generator. Create a short, descriptive title (maximum 25 characters) that captures the main topic of this conversation. The title should be clear, concise, and helpful for identifying the conversation later. Focus on the key topic, location, or activity discussed. Examples: 'KK Food Guide', 'Mount Kinabalu Trip', 'Sabah Weather', 'Sandakan Mee Places', 'Budget Travel Tips'."
-                ),
-                (
-                    "human",
-                    f"User asked: {user_message}\nAI responded about: {ai_response[:200]}...\n\nGenerate a short title for this conversation:"
-                )
-            ])
-            
-            chain = title_prompt | self.llm
-            response = await chain.ainvoke({})
-            
-            # Clean and limit the title
-            title = response.content.strip().replace('"', '').replace("'", "")
-            if len(title) > 25:
-                title = title[:22] + "..."
-            
-            return title
-            
-        except Exception as e:
-            print(f"Error generating chat title: {e}")
-            # Fallback to a simple title based on keywords
-            return self._generate_fallback_title(user_message)
-    
-    def _generate_fallback_title(self, user_message: str) -> str:
-        """
-        Generate a fallback title when AI title generation fails
-        """
-        message_lower = user_message.lower()
-        
-        # Define keyword-based titles
-        if any(word in message_lower for word in ['food', 'eat', 'restaurant', 'makan']):
-            return "Food & Dining"
-        elif any(word in message_lower for word in ['weather', 'rain', 'sunny', 'temperature']):
-            return "Weather Info"
-        elif any(word in message_lower for word in ['hotel', 'accommodation', 'stay', 'lodge']):
-            return "Accommodation"
-        elif any(word in message_lower for word in ['transport', 'flight', 'bus', 'car', 'travel']):
-            return "Transportation"
-        elif any(word in message_lower for word in ['itinerary', 'plan', 'trip', 'visit']):
-            return "Travel Planning"
-        elif any(word in message_lower for word in ['budget', 'cost', 'price', 'money']):
-            return "Budget Planning"
-        elif any(word in message_lower for word in ['kinabalu', 'kk', 'kota kinabalu']):
-            return "Kota Kinabalu"
-        elif any(word in message_lower for word in ['sandakan', 'tawau', 'lahad datu']):
-            return "East Coast Sabah"
-        else:
-            # Use first few words of the message
-            words = user_message.split()[:3]
-            title = ' '.join(words)
-            return title[:22] + "..." if len(title) > 22 else title

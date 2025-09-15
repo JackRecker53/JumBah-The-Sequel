@@ -3,20 +3,18 @@ import {
   Box,
   Typography,
   TextField,
-  Button,
+  IconButton,
   Paper,
   List,
   ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
-  Fab,
-  IconButton,
-  InputAdornment,
+  Divider,
   Chip,
-  CircularProgress,
-  Alert,
-  Snackbar
+  InputAdornment,
+  Fab,
+  CircularProgress
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -86,10 +84,9 @@ const AIPlanner = () => {
             if (!currentChat || index % 10 === 0) { // Group every 10 messages into a chat
               currentChat = {
                 id: Math.floor(index / 10) + 1,
-                // Use AI-generated title from backend, fallback to user message if not available
-                title: entry.title || (entry.user_message.length > 30 ? 
+                title: entry.user_message.length > 30 ? 
                   entry.user_message.substring(0, 30) + '...' : 
-                  entry.user_message),
+                  entry.user_message,
                 lastMessage: entry.ai_response.length > 50 ? 
                   entry.ai_response.substring(0, 50) + '...' : 
                   entry.ai_response,
@@ -175,12 +172,11 @@ const AIPlanner = () => {
           const lastMessage = newMessages[newMessages.length - 1];
           return {
             ...chat,
-            // Keep existing AI-generated title, only update if it's still "New Chat"
-            title: chat.title === 'New Chat' && newMessages.length > 2 ? 
+            title: newMessages.length > 2 ? 
               (newMessages[1].text.length > 30 ? 
                 newMessages[1].text.substring(0, 30) + '...' : 
                 newMessages[1].text) : 
-              chat.title,
+              'New Chat',
             lastMessage: lastMessage.text.length > 50 ? 
               lastMessage.text.substring(0, 50) + '...' : 
               lastMessage.text,
@@ -193,31 +189,28 @@ const AIPlanner = () => {
     );
   };
 
-
-
-  // Function to delete a single chat
-  const deleteSingleChat = (chatId) => {
+  // Function to delete chat history
+  const deleteChat = async () => {
     try {
-      // Remove the specific chat from frontend state
-      const updatedChatHistory = chatHistory.filter(chat => chat.id !== chatId);
-      setChatHistory(updatedChatHistory);
+      const response = await fetch(`http://localhost:8000/api/ai/history/${userId}`, {
+        method: 'DELETE',
+      });
       
-      // If the deleted chat was the active one, switch to another chat or create new one
-      if (currentChatId === chatId) {
-        if (updatedChatHistory.length > 0) {
-          // Switch to the most recent remaining chat
-          const mostRecentChat = updatedChatHistory[0];
-          setCurrentChatId(mostRecentChat.id);
-          setMessages(mostRecentChat.messages || []);
-        } else {
-          // No chats left, create a new one
-          createNewChat();
-        }
+      if (response.ok) {
+        // Clear all chat history from frontend
+        setChatHistory([]);
+        setMessages([]);
+        setCurrentChatId(null);
+        
+        // Create a new chat to start fresh
+        createNewChat();
+        
+        console.log('Chat history deleted successfully');
+      } else {
+        console.error('Failed to delete chat history');
       }
-      
-      console.log(`Chat ${chatId} deleted successfully`);
     } catch (error) {
-      console.error('Error deleting chat:', error);
+      console.error('Error deleting chat history:', error);
     }
   };
 
@@ -299,11 +292,6 @@ const AIPlanner = () => {
           const finalMessages = [...newMessages, aiResponse];
           setMessages(finalMessages);
           updateCurrentChatInHistory(finalMessages);
-          
-          // Reload chat history to get AI-generated title from backend
-          setTimeout(() => {
-            loadChatHistory();
-          }, 500);
         } else {
           throw new Error(response.error || 'Failed to get AI response');
         }
@@ -351,20 +339,24 @@ const AIPlanner = () => {
         {/* Chat History Sidebar */}
         <Paper className="chat-history-sidebar" elevation={2}>
           <Box className="chat-history-header">
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, width: '100%' }}>
-              <Typography variant="h6" className="chat-history-title">
-                Chat History
-              </Typography>
-              <Fab
-                size="small"
-                color="primary"
-                aria-label="new chat"
-                onClick={createNewChat}
-                title="Start new chat"
-                sx={{ ml: 'auto' }}
-              >
+            <Typography variant="h6" className="chat-history-title">
+              Chat History
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Fab size="small" color="primary" className="new-chat-btn" onClick={createNewChat}>
                 <AddIcon />
               </Fab>
+              {chatHistory.length > 0 && (
+                <Fab 
+                  size="small" 
+                  color="error" 
+                  className="delete-chat-btn" 
+                  onClick={deleteChat}
+                  title="Delete all chat history"
+                >
+                  <DeleteIcon />
+                </Fab>
+              )}
             </Box>
           </Box>
           
@@ -398,56 +390,26 @@ const AIPlanner = () => {
                 <ListItem
                   key={chat.id}
                   className={`chat-history-item ${chat.active ? 'active' : ''}`}
-                  sx={{ 
-                    position: 'relative'
-                  }}
+                  onClick={() => handleChatSelect(chat.id)}
                 >
-                  <Box 
-                    sx={{ display: 'flex', width: '100%', alignItems: 'center' }}
-                    onClick={() => handleChatSelect(chat.id)}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className="chat-avatar">
-                        <img src={maduIcon} alt="Madu" style={{ width: '100%', height: '100%' }} />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={chat.title}
-                      secondary={
-                        <Box component="span">
-                          <Typography variant="body2" component="span" className="last-message" sx={{ display: 'block' }}>
-                            {chat.lastMessage}
-                          </Typography>
-                          <Typography variant="caption" component="span" className="timestamp" sx={{ display: 'block' }}>
-                            {chat.timestamp}
-                          </Typography>
-                        </Box>
-                      }
-                    />
-                  </Box>
-                  <IconButton
-                    className="delete-chat-btn"
-                    size="small"
-                    color="error"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteSingleChat(chat.id);
-                    }}
-                    sx={{
-                      opacity: 1,
-                      transition: 'all 0.2s',
-                      position: 'absolute',
-                      right: 8,
-                      '&:hover': {
-                        backgroundColor: 'error.light',
-                        color: 'white',
-                        transform: 'scale(1.1)'
-                      }
-                    }}
-                    title="Delete this chat"
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                  <ListItemAvatar>
+                    <Avatar className="chat-avatar">
+                      <img src={maduIcon} alt="Madu" style={{ width: '100%', height: '100%' }} />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={chat.title}
+                    secondary={
+                      <Box component="span">
+                        <Typography variant="body2" component="span" className="last-message" sx={{ display: 'block' }}>
+                          {chat.lastMessage}
+                        </Typography>
+                        <Typography variant="caption" component="span" className="timestamp" sx={{ display: 'block' }}>
+                          {chat.timestamp}
+                        </Typography>
+                      </Box>
+                    }
+                  />
                 </ListItem>
               ))
             )}
@@ -530,7 +492,7 @@ const AIPlanner = () => {
                 fullWidth
                 multiline
                 maxRows={4}
-                placeholder="What would you like to know or plan for your adventure?"
+                placeholder="Ask Madu about your Sabah adventure..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
