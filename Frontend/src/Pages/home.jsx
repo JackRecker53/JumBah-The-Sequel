@@ -26,6 +26,24 @@ import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
 import Footer from '../components/pagecomponents/footer';
 
+// Import explore category images
+import kkImage from '../assets/images/KK.jpeg';
+import muziumSabahImage from '../assets/images/Muzium Sabah.jpg';
+import gayaStreetImage from '../assets/images/gaya street.JPG';
+import signalHillImage from '../assets/images/signal hill.jpg';
+import mountKinabaluImage from '../assets/images/MountKinabalu.png';
+import sabahArtGalleryImage from '../assets/images/sabah-art-gallery.jpg';
+import mari2Image from '../assets/images/mari2 cv.jpg';
+import kinabatanganRiverCruiseImage from '../assets/images/kinabatangan river cruise.jpg';
+import poring2Image from '../assets/images/poring2.jpg';
+import tanjungAruImage from '../assets/images/tanjungaru.jpg';
+
+// Import event images
+import sabahFestImage from '../assets/images/mari2 cv.jpg';
+import kinabaluClimbingImage from '../assets/images/MountKinabalu.png';
+import foodCultureFestivalImage from '../assets/images/gaya street.JPG';
+import sipadanDivingImage from '../assets/images/pulau sipadan.jpg';
+
 // Import Splide styles
 import '@splidejs/react-splide/css';
 
@@ -81,34 +99,34 @@ const Home = () => {
   const events = [
     {
       id: 1,
-      title: 'Sabah Fest 2024',
-      date: 'May 15-20, 2024',
+      title: 'Sabah Fest 2025',
+      date: 'May 15-20, 2025',
       location: 'Kota Kinabalu',
-      image: './src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg',
+      image: sabahFestImage,
       description: 'Annual cultural festival celebrating Sabahan heritage'
     },
     {
       id: 2,
       title: 'Mount Kinabalu Climbing Festival',
-      date: 'June 10-12, 2024',
+      date: 'June 10-12, 2025',
       location: 'Kinabalu Park',
-      image: './src/assets/images/MountKinabalu.png',
+      image: kinabaluClimbingImage,
       description: 'Adventure climbing event for all skill levels'
     },
     {
       id: 3,
-      title: 'Borneo Jazz Festival',
-      date: 'July 5-7, 2024',
-      location: 'Miri',
-      image: './src/assets/images/WhatsApp Image 2025-09-02 at 15.19.31_2332b235.jpg',
-      description: 'International jazz music festival'
+      title: 'Kota Kinabalu Food & Culture Festival',
+      date: 'July 5-7, 2025',
+      location: 'Kota Kinabalu',
+      image: foodCultureFestivalImage,
+      description: 'Celebrate Sabah\'s diverse culinary heritage and local culture'
     },
     {
       id: 4,
       title: 'Sipadan Diving Championship',
-      date: 'August 20-25, 2024',
+      date: 'August 20-25, 2025',
       location: 'Sipadan Island',
-      image: './src/assets/images/WhatsApp Image 2025-09-04 at 14.30.49_b8a2ae6d.jpg',
+      image: sipadanDivingImage,
       description: 'World-class diving competition'
     }
   ];
@@ -118,77 +136,77 @@ const Home = () => {
     { 
       name: 'City adventures', 
       description: 'Urban exploration in Kota Kinabalu',
-      image: './src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg',
+      image: kkImage,
       size: 'small',
       gridArea: '1 / 1 / 2 / 2'
     },
     { 
       name: 'Fun activities', 
       description: 'Adventure sports and outdoor fun',
-      image: './src/assets/images/WhatsApp Image 2025-09-02 at 15.19.31_2332b235.jpg',
+      image: poring2Image,
       size: 'small',
       gridArea: '1 / 2 / 2 / 3'
     },
-    { 
+    {
       name: 'Art and culture', 
       description: 'Museums and cultural heritage sites',
-      image: './src/assets/images/WhatsApp Image 2025-09-04 at 14.30.49_b8a2ae6d.jpg',
+      image: muziumSabahImage,
       size: 'large',
       gridArea: '1 / 3 / 3 / 4'
     },
-    { 
+    {
       name: 'Live music', 
       description: 'Concerts and music festivals',
-      image: './src/assets/images/MountKinabalu.png',
+      image: gayaStreetImage,
       size: 'wide',
       gridArea: '2 / 1 / 3 / 3'
     },
-    { 
+    {
       name: 'Nature and wildlife', 
       description: 'Rainforests and wildlife sanctuaries',
-      image: './src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg',
+      image: kinabatanganRiverCruiseImage,
       size: 'small',
       gridArea: '3 / 1 / 4 / 2'
     },
-    { 
+    {
       name: 'Road trips', 
       description: 'Scenic drives and itineraries',
-      image: './src/assets/images/WhatsApp Image 2025-09-02 at 15.19.31_2332b235.jpg',
+      image: signalHillImage,
       size: 'small',
       gridArea: '3 / 2 / 4 / 3'
     },
-    { 
+    {
       name: 'Destinations', 
       description: 'Must-visit places in Sabah',
-      image: './src/assets/images/WhatsApp Image 2025-09-04 at 14.30.49_b8a2ae6d.jpg',
+      image: mountKinabaluImage,
       size: 'small',
       gridArea: '4 / 1 / 5 / 2'
     },
-    { 
+    {
       name: 'Entertainment', 
       description: 'Nightlife and entertainment venues',
-      image: './src/assets/images/MountKinabalu.png',
+      image: sabahArtGalleryImage,
       size: 'small',
       gridArea: '4 / 2 / 5 / 3'
     },
-    { 
+    {
       name: 'Eat and drink', 
       description: 'Local cuisine and dining experiences',
-      image: './src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg',
+      image: mari2Image,
       size: 'small',
-      gridArea: '4 / 3 / 5 / 4'
+      gridArea: '5 / 3 / 6 / 4'
     },
     { 
       name: 'Places to stay', 
       description: 'Hotels and accommodations',
-      image: './src/assets/images/WhatsApp Image 2025-09-02 at 15.19.31_2332b235.jpg',
+      image: tanjungAruImage,
       size: 'small',
       gridArea: '5 / 1 / 6 / 2'
     }
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <Header onSidebarToggle={handleSidebarToggle} />
       

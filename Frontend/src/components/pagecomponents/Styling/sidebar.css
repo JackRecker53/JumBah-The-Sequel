@@ -2,74 +2,145 @@
 
 /* Drawer Paper */
 .sidebar-drawer .MuiDrawer-paper {
-  width: 280px !important;
-  background: linear-gradient(135deg, #072b80 0%, #0484d6 100%) !important;
+  width: 320px !important;
   color: white !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Header Section */
 .sidebar-header {
-  padding: 16px !important;
+  padding: 20px 16px 16px 16px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.sidebar-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.sidebar-logo {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
 }
 
 .sidebar-title {
   font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: 0.5px !important;
 }
 
 .sidebar-close-button {
   color: white !important;
+  transition: all 0.2s ease !important;
 }
+
+.sidebar-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05) !important;
+}
+
+
 
 /* Dividers */
 .sidebar-divider {
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  margin: 0 16px !important;
 }
 
-.sidebar-divider-secondary {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
+.sidebar-divider-bottom {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  margin: 8px 16px !important;
+}
+
+/* Menu Lists */
+.sidebar-menu-list,
+.sidebar-secondary-list {
+  padding: 8px 0 !important;
 }
 
 /* Menu Items */
 .sidebar-menu-item {
-  padding: 0 !important;
+  margin: 2px 12px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
 }
 
 .sidebar-menu-button {
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  transition: background-color 0.3s ease !important;
+  padding: 14px 16px !important;
+  transition: all 0.3s ease !important;
+  border-radius: 12px !important;
+  position: relative !important;
 }
 
 .sidebar-menu-button:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transform: translateX(4px) !important;
+}
+
+.sidebar-menu-button:active {
+  transform: translateX(2px) scale(0.98) !important;
 }
 
 .sidebar-menu-icon {
   color: white !important;
-  min-width: 40px !important;
+  min-width: 44px !important;
+}
+
+.sidebar-menu-icon .MuiSvgIcon-root {
+  font-size: 1.4rem !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) !important;
 }
 
 .sidebar-menu-text .MuiListItemText-primary {
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 1rem !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Bottom Section */
 .sidebar-bottom {
   margin-top: auto !important;
-  padding: 16px !important;
+  padding: 20px 16px !important;
   text-align: center !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
-.sidebar-bottom-title {
-  opacity: 0.8 !important;
+.sidebar-bottom-text {
+  font-weight: 600 !important;
+  color: white !important;
+  margin-bottom: 4px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .sidebar-bottom-subtitle {
-  opacity: 0.6 !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-style: italic !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar-drawer .MuiDrawer-paper {
+    width: 280px !important;
+  }
+  
+  .sidebar-brand {
+    gap: 8px !important;
+  }
+  
+  .sidebar-logo {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  .sidebar-title {
+    font-size: 1.1rem !important;
+  }
 }

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Orangutan silhouette -->
+  <g transform="translate(200, 100)">
+    <!-- Main body -->
+    <ellipse cx="200" cy="250" rx="80" ry="120" fill="#2d5016"/>
+    
+    <!-- Head -->
+    <circle cx="200" cy="150" r="70" fill="#2d5016"/>
+    
+    <!-- Face details -->
+    <ellipse cx="185" cy="140" rx="8" ry="12" fill="#ffffff"/>
+    <ellipse cx="215" cy="140" rx="8" ry="12" fill="#ffffff"/>
+    <ellipse cx="185" cy="142" rx="4" ry="6" fill="#000000"/>
+    <ellipse cx="215" cy="142" rx="4" ry="6" fill="#000000"/>
+    
+    <!-- Nose -->
+    <ellipse cx="200" cy="160" rx="6" ry="4" fill="#1a3009"/>
+    
+    <!-- Arms -->
+    <ellipse cx="120" cy="200" rx="25" ry="80" fill="#2d5016" transform="rotate(-30 120 200)"/>
+    <ellipse cx="280" cy="200" rx="25" ry="80" fill="#2d5016" transform="rotate(30 280 200)"/>
+    
+    <!-- Legs -->
+    <ellipse cx="170" cy="340" rx="20" ry="60" fill="#2d5016"/>
+    <ellipse cx="230" cy="340" rx="20" ry="60" fill="#2d5016"/>
+    
+    <!-- Decorative elements -->
+    <!-- Vine on left arm -->
+    <path d="M 100 180 Q 80 160 90 140 Q 100 120 80 110" stroke="#7cb342" stroke-width="4" fill="none"/>
+    <circle cx="85" cy="115" r="8" fill="#7cb342"/>
+    <circle cx="95" cy="125" r="6" fill="#8bc34a"/>
+    
+    <!-- Fire/torch on right arm -->
+    <ellipse cx="300" cy="160" rx="15" ry="25" fill="#ff5722"/>
+    <ellipse cx="300" cy="150" rx="12" ry="20" fill="#ff9800"/>
+    <ellipse cx="300" cy="145" rx="8" ry="15" fill="#ffc107"/>
+    
+    <!-- Leaves around -->
+    <ellipse cx="320" cy="120" rx="12" ry="8" fill="#4caf50" transform="rotate(45 320 120)"/>
+    <ellipse cx="340" cy="140" rx="10" ry="6" fill="#66bb6a" transform="rotate(-30 340 140)"/>
+    <ellipse cx="60" cy="200" rx="14" ry="9" fill="#4caf50" transform="rotate(-45 60 200)"/>
+    <ellipse cx="40" cy="220" rx="11" ry="7" fill="#66bb6a" transform="rotate(60 40 220)"/>
+  </g>
+  
+  <!-- Text -->
+  <g transform="translate(150, 450)">
+    <!-- "Jum" in green -->
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#2d5016">Jum</text>
+    <!-- "Bah" in orange -->
+    <text x="180" y="0" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#ff9800">Bah</text>
+  </g>
+  
+  <!-- Decorative swirls -->
+  <path d="M 100 500 Q 120 480 140 500 Q 160 520 180 500" stroke="#7cb342" stroke-width="3" fill="none"/>
+  <path d="M 620 500 Q 640 480 660 500 Q 680 520 700 500" stroke="#ff9800" stroke-width="3" fill="none"/>
+</svg>

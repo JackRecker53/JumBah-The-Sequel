@@ -140,7 +140,7 @@ const sabahLocations = {
       position: [5.9804, 116.0735],
       type: "event",
       description: "Annual harvest festival celebration",
-      date: "May 30-31, 2024",
+      date: "May 30-31, 2025",
       category: "Cultural"
     },
     {
@@ -149,7 +149,7 @@ const sabahLocations = {
       position: [4.6167, 118.6167],
       type: "event",
       description: "Traditional boat festival in Semporna",
-      date: "April 15-17, 2024",
+      date: "April 15-17, 2025",
       category: "Cultural"
     },
     {
@@ -158,7 +158,7 @@ const sabahLocations = {
       position: [4.4167, 114.0167],
       type: "event",
       description: "International jazz music festival",
-      date: "May 10-12, 2024",
+      date: "May 10-12, 2025",
       category: "Music"
     }
   ]

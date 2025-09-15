@@ -90,7 +90,7 @@ const Footer = () => {
         
         {/* Copyright */}
         <Typography variant="body2" className="footer-copyright">
-          © 2024 Jumbah. All rights reserved. | Discover Sabah with confidence.
+          © 2025 Jumbah. All rights reserved. | Discover Sabah with confidence.
         </Typography>
       </Box>
     </Box>

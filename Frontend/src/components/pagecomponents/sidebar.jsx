@@ -15,9 +15,6 @@ import {
   Home,
   Explore,
   Map,
-  Restaurant,
-  Hotel,
-  LocalActivity,
   Info,
   Close
 } from '@mui/icons-material';
@@ -35,9 +32,6 @@ const Sidebar = ({ open, onClose }) => {
   const menuItems = [
     { text: 'Home', icon: <Home />, path: '/' },
     { text: 'Adventure', icon: <Explore />, path: '/adventure' },
-    { text: 'Restaurants', icon: <Restaurant />, path: '/restaurants' },
-    { text: 'Hotels', icon: <Hotel />, path: '/hotels' },
-    { text: 'Activities', icon: <LocalActivity />, path: '/activities' },
     { text: 'Map', icon: <Map />, path: '/map' },
   ];
 
@@ -51,11 +45,23 @@ const Sidebar = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
       className="sidebar-drawer"
+      sx={{
+        '& .MuiDrawer-paper': {
+          background: 'linear-gradient(135deg, #072b80 0%, #0484d6 100%)',
+        }
+      }}
     >
       <Box className="sidebar-header">
-        <Typography variant="h6" className="sidebar-title">
-          Jumbah
-        </Typography>
+        <Box className="sidebar-brand">
+          <img 
+            src="./src/assets/images/jumbahlogov2-removebg-preview.png" 
+            alt="Jumbah Logo" 
+            className="sidebar-logo"
+          />
+          <Typography variant="h6" className="sidebar-title">
+            Jumbah™
+          </Typography>
+        </Box>
         <IconButton onClick={onClose} className="sidebar-close-button">
           <Close />
         </IconButton>
@@ -63,12 +69,18 @@ const Sidebar = ({ open, onClose }) => {
       
       <Divider className="sidebar-divider" />
       
-      <List>
-          {menuItems.map((item) => (
-            <ListItem
-              key={item.text}
+
+      
+      <List className="sidebar-menu-list">
+        {menuItems.map((item) => (
+          <ListItem
+            key={item.text}
+            className="sidebar-menu-item"
+            disablePadding
+          >
+            <ListItemButton
               onClick={() => handleNavigation(item.path)}
-              className="sidebar-menu-item"
+              className="sidebar-menu-button"
             >
               <ListItemIcon className="sidebar-menu-icon">
                 {item.icon}
@@ -77,35 +89,44 @@ const Sidebar = ({ open, onClose }) => {
                 primary={item.text}
                 className="sidebar-menu-text"
               />
-            </ListItem>
-          ))}
-        </List>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
       
       <Divider className="sidebar-divider-bottom" />
       
-      <List>
+      <List className="sidebar-secondary-list">
         {secondaryItems.map((item) => (
           <ListItem
             key={item.text}
-            onClick={() => handleNavigation(item.path)}
             className="sidebar-menu-item"
+            disablePadding
           >
-            <ListItemIcon className="sidebar-menu-icon">
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText 
-              primary={item.text}
-              className="sidebar-menu-text"
-            />
+            <ListItemButton
+              onClick={() => handleNavigation(item.path)}
+              className="sidebar-menu-button"
+            >
+              <ListItemIcon className="sidebar-menu-icon">
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text}
+                className="sidebar-menu-text"
+              />
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
       
       <Box className="sidebar-bottom">
-        <Typography variant="body2" className="sidebar-bottom-text">
-          Discover Sabah with Jumbah
-        </Typography>
-      </Box>
+          <Typography variant="body2" className="sidebar-bottom-text">
+            Jumbah
+          </Typography>
+          <Typography variant="caption" className="sidebar-bottom-subtitle">
+            Your Adventure Companion
+          </Typography>
+        </Box>
     </Drawer>
   );
 };

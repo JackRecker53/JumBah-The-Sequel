@@ -1,0 +1,33 @@
+<svg width="440" height="260" viewBox="0 0 440 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- j -->
+  <circle cx="115" cy="175" r="8" fill="#C85A54"/>
+  <rect x="107" y="185" width="16" height="45" rx="8" fill="#C85A54"/>
+  <path d="M107 230 Q107 245 92 245 Q77 245 77 230" stroke="#C85A54" stroke-width="16" fill="none"/>
+  
+  <!-- u -->
+  <rect x="135" y="185" width="16" height="45" rx="8" fill="#E8A298"/>
+  <rect x="175" y="185" width="16" height="45" rx="8" fill="#E8A298"/>
+  <path d="M135 230 Q135 245 150 245 Q165 245 175 230" stroke="#E8A298" stroke-width="16" fill="none"/>
+  
+  <!-- m -->
+  <rect x="195" y="185" width="16" height="45" rx="8" fill="#F4C2C2"/>
+  <rect x="215" y="185" width="16" height="35" rx="8" fill="#F4C2C2"/>
+  <rect x="235" y="185" width="16" height="35" rx="8" fill="#F4C2C2"/>
+  <path d="M195 195 Q205 185 215 195" stroke="#F4C2C2" stroke-width="8" fill="none"/>
+  <path d="M215 195 Q225 185 235 195" stroke="#F4C2C2" stroke-width="8" fill="none"/>
+  
+  <!-- b -->
+  <rect x="270" y="165" width="16" height="65" rx="8" fill="#B8D4F0"/>
+  <circle cx="295" cy="190" r="15" fill="none" stroke="#B8D4F0" stroke-width="16"/>
+  <circle cx="295" cy="215" r="15" fill="none" stroke="#B8D4F0" stroke-width="16"/>
+  
+  <!-- a -->
+  <circle cx="325" cy="205" r="20" fill="none" stroke="#6FA8DC" stroke-width="16"/>
+  <rect x="345" y="185" width="16" height="45" rx="8" fill="#6FA8DC"/>
+  <rect x="305" y="205" width="40" height="8" fill="#6FA8DC"/>
+  
+  <!-- h -->
+  <rect x="375" y="165" width="16" height="65" rx="8" fill="#4A90E2"/>
+  <rect x="405" y="185" width="16" height="45" rx="8" fill="#4A90E2"/>
+  <rect x="375" y="195" width="46" height="8" fill="#4A90E2"/>
+</svg>

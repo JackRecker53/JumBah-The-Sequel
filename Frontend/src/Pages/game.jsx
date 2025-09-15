@@ -17,13 +17,20 @@ import {
   FormControlLabel,
   Radio,
   FormControl,
-  FormLabel
+  FormLabel,
+  Tabs,
+  Tab,
+  Fab
 } from '@mui/material';
 import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
-import QuestCard from '../components/QuestCard';
-import QRScanner from '../components/QRScanner';
-import GameProgressBar from '../components/GameProgressBar';
+import QuestCard from '../components/gamecomponents/QuestCard';
+import QRScanner from '../components/gamecomponents/QRScanner';
+import GameProgressBar from '../components/gamecomponents/GameProgressBar';
+import Leaderboard from '../components/gamecomponents/Leaderboard';
+import AchievementsPanel from '../components/gamecomponents/AchievementsPanel';
+import SocialSharing from '../components/gamecomponents/SocialSharing';
+import UnlockableContent from '../components/gamecomponents/UnlockableContent';
 import questsData from '../data/quests.json';
 import {
   getGameProgress,
@@ -31,7 +38,8 @@ import {
   isQuestCompleted,
   getCompletionPercentage,
   getCompletedQuestsCount,
-  submitQuestMock
+  submitQuestMock,
+  resetGameProgress
 } from '../utils/gameProgress';
 
 const Game = () => {
@@ -42,6 +50,12 @@ const Game = () => {
   const [submissionResult, setSubmissionResult] = useState(null);
   const [submissionLoading, setSubmissionLoading] = useState(false);
   const [celebrationOpen, setCelebrationOpen] = useState(false);
+  const [celebrationShown, setCelebrationShown] = useState(false);
+  
+  // New feature states
+  const [currentView, setCurrentView] = useState('quests'); // 'quests', 'leaderboard', 'achievements', 'unlockables'
+  const [sharingDialogOpen, setSharingDialogOpen] = useState(false);
+  const [sharingContent, setSharingContent] = useState(null);
   
   // Quest submission states
   const [photoFile, setPhotoFile] = useState(null);
@@ -50,8 +64,31 @@ const Game = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
 
+
+
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleViewChange = (event, newValue) => {
+    setCurrentView(newValue);
+  };
+
+
+
+  const handleShareContent = (content) => {
+    setSharingContent(content);
+    setSharingDialogOpen(true);
+  };
+
+  const handleSharingClose = () => {
+    setSharingDialogOpen(false);
+    setSharingContent(null);
+  };
+
+  const handleContentUnlock = async (contentId) => {
+    // Content unlock functionality can be implemented here if needed
+    console.log('Content unlocked:', contentId);
   };
 
   const handleStartQuest = (quest) => {
@@ -93,6 +130,8 @@ const Game = () => {
       if (result.success) {
         const updatedProgress = completeQuest(selectedQuest.id, selectedQuest);
         setGameProgress(updatedProgress);
+        
+
       }
     } catch (error) {
       setSubmissionResult({ success: false, message: 'Error submitting quest' });
@@ -212,21 +251,44 @@ const Game = () => {
     setSubmissionLoading(false);
   };
 
+  const handleCloseCelebration = () => {
+    console.log('Closing celebration dialog...');
+    setCelebrationOpen(false);
+  };
+
+  const handleResetDemo = () => {
+    if (window.confirm('Are you sure you want to reset all progress? This will clear all completed quests and scores for demo purposes.')) {
+      const resetProgress = resetGameProgress();
+      setGameProgress(resetProgress);
+      setCelebrationShown(false);
+      setCelebrationOpen(false);
+      setSelectedQuest(null);
+      setQuestDialogOpen(false);
+      console.log('Demo reset completed');
+    }
+  };
+
+  // Debug: Track celebrationOpen state changes
+  useEffect(() => {
+    console.log('celebrationOpen state changed to:', celebrationOpen);
+  }, [celebrationOpen]);
+
   // Check for celebration when all quests are completed
   useEffect(() => {
     const completedCount = getCompletedQuestsCount();
     const totalQuests = questsData.length;
     
-    if (completedCount === totalQuests && completedCount > 0 && !celebrationOpen) {
+    if (completedCount === totalQuests && completedCount > 0 && !celebrationShown) {
       setCelebrationOpen(true);
+      setCelebrationShown(true);
     }
-  }, [gameProgress.completedQuests, questsData.length, celebrationOpen]);
+  }, [gameProgress.completedQuests, questsData.length, celebrationShown]);
 
   const renderQuestContent = () => {
     if (!selectedQuest) return null;
 
     const mockSubmitButton = (
-      <Box sx={{ mt: 2, textAlign: 'center' }}>
+      <Box sx={{ mt: 2, textAlign: 'center', display: 'flex', gap: 1, justifyContent: 'center' }}>
         <Button
           variant="outlined"
           color="secondary"
@@ -235,6 +297,18 @@ const Game = () => {
           size="small"
         >
           {submissionLoading ? <CircularProgress size={16} /> : '🎯 Mock Submit (Testing)'}
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => {
+            console.log('Test Celebration clicked, opening dialog. Current state:', celebrationOpen);
+            setCelebrationShown(false); // Reset the flag for testing
+            setCelebrationOpen(true);
+          }}
+          size="small"
+        >
+          🎉 Test Celebration
         </Button>
       </Box>
     );
@@ -395,17 +469,73 @@ const Game = () => {
           stamps={gameProgress.stamps}
         />
 
-        <Grid container spacing={3} sx={{ mt: 2 }}>
-          {questsData.map((quest) => (
-            <Grid item xs={12} sm={6} md={4} key={quest.id}>
-              <QuestCard
-                quest={quest}
-                onStartQuest={handleStartQuest}
-                isCompleted={isQuestCompleted(quest.id)}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {/* Navigation Tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 3, mb: 3 }}>
+          <Tabs value={currentView} onChange={handleViewChange} centered>
+            <Tab label="🗺️ Quests" value="quests" />
+            <Tab label="🏆 Leaderboard" value="leaderboard" />
+            <Tab label="🏅 Achievements" value="achievements" />
+            <Tab label="🎁 Unlockables" value="unlockables" />
+          </Tabs>
+        </Box>
+
+        {/* Content based on current view */}
+        {currentView === 'quests' && (
+          <Grid container spacing={3} sx={{ mt: 2 }}>
+            {questsData.map((quest) => (
+              <Grid item xs={12} sm={6} md={4} key={quest.id}>
+                <QuestCard
+                  quest={quest}
+                  onStartQuest={handleStartQuest}
+                  isCompleted={isQuestCompleted(quest.id)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
+        {currentView === 'leaderboard' && (
+          <Box sx={{ mt: 2 }}>
+            <Leaderboard />
+          </Box>
+        )}
+
+        {currentView === 'achievements' && (
+          <Box sx={{ mt: 2 }}>
+            <AchievementsPanel 
+              onShareAchievement={handleShareContent}
+            />
+          </Box>
+        )}
+
+        {currentView === 'unlockables' && (
+          <Box sx={{ mt: 2 }}>
+            <UnlockableContent 
+              onContentUnlock={handleContentUnlock}
+            />
+          </Box>
+        )}
+
+        {/* Floating Action Button for Reset Demo */}
+        <Fab
+          color="secondary"
+          aria-label="reset demo"
+          size="small"
+          sx={{ 
+            position: 'fixed', 
+            bottom: 80, 
+            right: 16,
+            bgcolor: '#f44336',
+            '&:hover': {
+              bgcolor: '#d32f2f'
+            }
+          }}
+          onClick={handleResetDemo}
+        >
+          🔄
+        </Fab>
+
+
 
         {/* Quest Dialog */}
         <Dialog
@@ -443,7 +573,7 @@ const Game = () => {
         {/* Celebration Modal */}
         <Dialog
           open={celebrationOpen}
-          onClose={() => setCelebrationOpen(false)}
+          onClose={handleCloseCelebration}
           maxWidth="sm"
           fullWidth
           PaperProps={{
@@ -490,7 +620,7 @@ const Game = () => {
           <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
             <Button
               variant="contained"
-              onClick={() => setCelebrationOpen(false)}
+              onClick={handleCloseCelebration}
               sx={{
                 bgcolor: 'rgba(255,255,255,0.2)',
                 color: 'white',
@@ -502,6 +632,33 @@ const Game = () => {
               }}
             >
               Continue Exploring
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+
+
+        {/* Social Sharing Dialog */}
+        <Dialog
+          open={sharingDialogOpen}
+          onClose={handleSharingClose}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>
+            <Typography variant="h5">
+              📱 Share Your Achievement
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <SocialSharing 
+              content={sharingContent}
+              onClose={handleSharingClose}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleSharingClose}>
+              Close
             </Button>
           </DialogActions>
         </Dialog>

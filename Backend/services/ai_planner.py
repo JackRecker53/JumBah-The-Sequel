@@ -18,7 +18,7 @@ class AIPlanner:
             raise ValueError("GEMINI_API_KEY not found in environment variables")
         
         # Initialize the LangChain Gemini model
-        self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", api_key=api_key)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", api_key=api_key)
         
         # Set up chat history storage
         self.history_dir = Path("chat_history")

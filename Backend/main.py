@@ -34,11 +34,13 @@ async def health_check():
     return {"status": "healthy"}
 
 # Import and include routers
-from routers import locations, ai_planner, weather
+from routers import locations, ai_planner, weather, users, ai_content
 
 app.include_router(locations.router, prefix="/api/locations", tags=["locations"])
-app.include_router(ai_planner.router, prefix="/api/ai", tags=["ai-planner"])
+app.include_router(ai_planner.router, prefix="/api/ai-planner", tags=["ai-planner"])
 app.include_router(weather.router, prefix="/api/weather", tags=["weather"])
+app.include_router(users.router, prefix="/api/users", tags=["users"])
+app.include_router(ai_content.router, prefix="/api/ai-content", tags=["ai-content"])
 
 if __name__ == "__main__":
     import uvicorn
