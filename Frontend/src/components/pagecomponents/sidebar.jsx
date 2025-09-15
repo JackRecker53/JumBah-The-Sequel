@@ -1,25 +1,27 @@
 import React from 'react';
 import {
   Drawer,
+  Box,
+  Typography,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Divider,
-  Typography,
-  Box,
   IconButton
 } from '@mui/material';
 import {
-  Close as CloseIcon,
-  Home as HomeIcon,
-  Explore as ExploreIcon,
-  Psychology as PsychologyIcon,
-  Map as MapIcon,
-  Info as InfoIcon,
-  ContactMail as ContactIcon
+  Home,
+  Explore,
+  Map,
+  Restaurant,
+  Hotel,
+  LocalActivity,
+  Info,
+  Close
 } from '@mui/icons-material';
+import './Styling/sidebar.css';
 import { useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ open, onClose }) => {
@@ -31,15 +33,16 @@ const Sidebar = ({ open, onClose }) => {
   };
 
   const menuItems = [
-    { text: 'Home', icon: <HomeIcon />, path: '/' },
-    { text: 'Adventure', icon: <ExploreIcon />, path: '/adventure' },
-    { text: 'AI Planner', icon: <PsychologyIcon />, path: '/aiplanner' },
-    { text: 'Map', icon: <MapIcon />, path: '/map' },
+    { text: 'Home', icon: <Home />, path: '/' },
+    { text: 'Adventure', icon: <Explore />, path: '/adventure' },
+    { text: 'Restaurants', icon: <Restaurant />, path: '/restaurants' },
+    { text: 'Hotels', icon: <Hotel />, path: '/hotels' },
+    { text: 'Activities', icon: <LocalActivity />, path: '/activities' },
+    { text: 'Map', icon: <Map />, path: '/map' },
   ];
 
   const secondaryItems = [
-    { text: 'About Jumbah', icon: <InfoIcon />, path: '/about' },
-    { text: 'Contact', icon: <ContactIcon />, path: '/contact' },
+    { text: 'About Jumbah', icon: <Info />, path: '/about' },
   ];
 
   return (
@@ -47,91 +50,60 @@ const Sidebar = ({ open, onClose }) => {
       anchor="right"
       open={open}
       onClose={onClose}
-      sx={{
-        '& .MuiDrawer-paper': {
-          width: 280,
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%)',
-          color: 'white',
-        },
-      }}
+      className="sidebar-drawer"
     >
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          Menu
+      <Box className="sidebar-header">
+        <Typography variant="h6" className="sidebar-title">
+          Jumbah
         </Typography>
-        <IconButton onClick={onClose} sx={{ color: 'white' }}>
-          <CloseIcon />
+        <IconButton onClick={onClose} className="sidebar-close-button">
+          <Close />
         </IconButton>
       </Box>
       
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.2)' }} />
+      <Divider className="sidebar-divider" />
       
       <List>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton 
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.text}
               onClick={() => handleNavigation(item.path)}
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                },
-                py: 1.5,
-              }}
+              className="sidebar-menu-item"
             >
-              <ListItemIcon sx={{ color: 'white', minWidth: 40 }}>
+              <ListItemIcon className="sidebar-menu-icon">
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
-                primary={item.text} 
-                sx={{ 
-                  '& .MuiListItemText-primary': {
-                    fontWeight: 500,
-                    fontSize: '1rem'
-                  }
-                }}
+                primary={item.text}
+                className="sidebar-menu-text"
               />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+            </ListItem>
+          ))}
+        </List>
       
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.2)', my: 1 }} />
+      <Divider className="sidebar-divider-bottom" />
       
       <List>
         {secondaryItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton 
-              onClick={() => handleNavigation(item.path)}
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                },
-                py: 1.5,
-              }}
-            >
-              <ListItemIcon sx={{ color: 'white', minWidth: 40 }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText 
-                primary={item.text} 
-                sx={{ 
-                  '& .MuiListItemText-primary': {
-                    fontWeight: 500,
-                    fontSize: '1rem'
-                  }
-                }}
-              />
-            </ListItemButton>
+          <ListItem
+            key={item.text}
+            onClick={() => handleNavigation(item.path)}
+            className="sidebar-menu-item"
+          >
+            <ListItemIcon className="sidebar-menu-icon">
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText 
+              primary={item.text}
+              className="sidebar-menu-text"
+            />
           </ListItem>
         ))}
       </List>
       
-      <Box sx={{ mt: 'auto', p: 2, textAlign: 'center' }}>
-        <Typography variant="body2" sx={{ opacity: 0.8 }}>
-          Discover Sabah
-        </Typography>
-        <Typography variant="caption" sx={{ opacity: 0.6 }}>
-          Land Below the Wind
+      <Box className="sidebar-bottom">
+        <Typography variant="body2" className="sidebar-bottom-text">
+          Discover Sabah with Jumbah
         </Typography>
       </Box>
     </Drawer>

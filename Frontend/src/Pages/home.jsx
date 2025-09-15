@@ -285,7 +285,7 @@ const Home = () => {
             variant="contained"
             size="large"
             sx={{
-              background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
+              background: 'linear-gradient(45deg, #f5362e, #77cbfe)',
               color: 'white',
               px: 4,
               py: 2,
@@ -295,7 +295,7 @@ const Home = () => {
               textTransform: 'none',
               boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
               '&:hover': {
-                background: 'linear-gradient(45deg, #ff5252, #26a69a)',
+                background: 'linear-gradient(45deg, #f5362e, #0484d6)',
                 transform: 'translateY(-2px)',
                 boxShadow: '0 12px 25px rgba(0,0,0,0.4)'
               },

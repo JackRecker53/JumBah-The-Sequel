@@ -20,6 +20,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Weather from '../Weather';
+import './Styling/header.css';
 
 const Header = ({ onSidebarToggle }) => {
   const navigate = useNavigate();
@@ -70,89 +71,29 @@ const Header = ({ onSidebarToggle }) => {
   return (
     <AppBar 
       position="fixed" 
-      sx={{
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%)',
-        boxShadow: '0 4px 20px rgba(30, 58, 138, 0.3)',
-        zIndex: theme.zIndex.drawer + 1,
-        '@keyframes pulse': {
-          '0%': {
-            transform: 'scale(1)',
-            opacity: 1
-          },
-          '50%': {
-            transform: 'scale(1.05)',
-            opacity: 0.8
-          },
-          '100%': {
-            transform: 'scale(1)',
-            opacity: 1
-          }
-        }
-      }}
+      className="header-appbar"
+      sx={{ zIndex: theme.zIndex.drawer + 1 }}
     >
-      <Toolbar sx={{ justifyContent: 'center', px: { xs: 2, md: 4 }, position: 'relative' }}>
+      <Toolbar className="header-toolbar">
         {/* Logo Section - Positioned absolutely on the left */}
         <Box 
-          sx={{ 
-            position: 'absolute',
-            left: { xs: 16, md: 32 },
-            top: '60%',
-            transform: 'translateY(-50%)',
-            display: 'flex', 
-            alignItems: 'center', 
-            cursor: 'pointer',
-            '&:hover': { opacity: 0.8 }
-          }}
+          className="header-logo-container"
           onClick={() => navigate('/')}
         >
           <img 
              src="./src/assets/images/jumbahlogov2-removebg-preview.png" 
              alt="Jumbah Logo" 
-             style={{ 
-               height: '150px', 
-               width: 'auto'
-             }} 
+             className="header-logo"
            />
         </Box>
 
         {/* Navigation Tabs - Centered */}
         {!isMobile && (
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            background: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '30px',
-            padding: '4px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
-          }}>
+          <Box className="header-nav-container">
             <Tabs
               value={getActiveTab()}
               onChange={handleTabChange}
-              sx={{
-                '& .MuiTabs-indicator': {
-                  display: 'none'
-                },
-                '& .MuiTab-root': {
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  fontWeight: 600,
-                  textTransform: 'none',
-                  fontSize: '0.9rem',
-                  minHeight: '48px',
-                  borderRadius: '24px',
-                  margin: '2px',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    color: 'white',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  },
-                  '&.Mui-selected': {
-                    color: 'white',
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-                  }
-                }
-              }}
+              className="header-tabs"
             >
               {navigationTabs.map((tab, index) => (
                 <Tab
@@ -160,19 +101,7 @@ const Header = ({ onSidebarToggle }) => {
                   icon={tab.icon}
                   label={tab.label}
                   iconPosition="start"
-                  sx={{
-                    minWidth: 'auto',
-                    px: 2,
-                    ...(tab.highlight && {
-                      background: 'linear-gradient(45deg, #f5362e, #77cbfe, #0484d6, #072b80)',
-                      borderRadius: '20px',
-                      margin: '2px',
-                      '&:hover': {
-                        background: 'linear-gradient(45deg, #f5362e, #77cbfe, #0484d6, #072b80)',
-                        opacity: 0.9
-                      }
-                    })
-                  }}
+                  className={tab.highlight ? 'header-tab-highlight' : ''}
                 />
               ))}
             </Tabs>
@@ -180,28 +109,15 @@ const Header = ({ onSidebarToggle }) => {
         )}
 
         {/* Weather Widget and Sidebar Toggle - Positioned absolutely on the right */}
-        <Box
-          sx={{
-            position: 'absolute',
-            right: { xs: 16, md: 32 },
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1
-          }}
-        >
+        <Box className="header-right-section">
           <Weather />
           <IconButton
             color="inherit"
             aria-label="open sidebar"
             onClick={onSidebarToggle}
-            sx={{
-              color: 'white',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              }
-            }}
+            className="header-menu-button"
           >
-            <MenuIcon sx={{ fontSize: '1.8rem' }} />
+            <MenuIcon className="header-menu-icon" />
           </IconButton>
         </Box>
       </Toolbar>

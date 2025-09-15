@@ -125,6 +125,35 @@ async def get_chat_history(
             detail=f"Error retrieving chat history: {str(e)}"
         )
 
+@router.delete("/history/{user_id}")
+async def delete_chat_history(user_id: str):
+    """
+    Delete all chat history for a specific user
+    
+    - **user_id**: User identifier whose chat history to delete
+    """
+    try:
+        result = ai_planner.delete_chat_history(user_id)
+        
+        if not result["success"]:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error deleting chat history: {result.get('error', 'Unknown error')}"
+            )
+        
+        return {
+            "success": True,
+            "message": f"Chat history deleted successfully for user {user_id}"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unexpected error deleting chat history: {str(e)}"
+        )
+
 @router.get("/health")
 async def ai_health_check():
     """

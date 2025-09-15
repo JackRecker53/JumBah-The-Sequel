@@ -7,7 +7,7 @@ const SabahHeader = () => {
     <AppBar 
       position="static" 
       sx={{
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%)',
+        background: 'linear-gradient(135deg, #072b80 0%, #0484d6 100%)',
         boxShadow: '0 4px 20px rgba(30, 58, 138, 0.3)',
       }}
     >

@@ -1,0 +1,173 @@
+/* Header Component Styles */
+
+/* ===== LOGO POSITION CONFIGURATION ===== */
+/* 🎛️ ADJUST THESE VALUES TO CONTROL LOGO POSITION */
+:root {
+  --logo-height-position: 65%; /* Controls vertical position (30% = higher, 50% = center, 70% = lower) */
+  --logo-size: 160px; /* Controls logo size */
+}
+
+/* AppBar Styles */
+.header-appbar {
+  background: #77cbfe !important;
+  box-shadow: 0 4px 20px rgba(119, 203, 254, 0.3) !important;
+  position: fixed !important;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Toolbar Styles */
+.header-toolbar {
+  justify-content: center !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  position: relative !important;
+}
+
+@media (min-width: 900px) {
+  .header-toolbar {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+/* Logo Section */
+.header-logo-container {
+  position: absolute !important;
+  left: 16px !important;
+  top: var(--logo-height-position) !important;
+  transform: translateY(-50%) !important;
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.header-logo-container:hover {
+  opacity: 0.8 !important;
+}
+
+@media (min-width: 900px) {
+  .header-logo-container {
+    left: 32px !important;
+  }
+}
+
+.header-logo {
+  height: var(--logo-size);
+  width: auto;
+}
+
+/* Navigation Tabs Container */
+.header-nav-container {
+  display: flex !important;
+  align-items: center !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 30px !important;
+  padding: 4px !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Navigation Tabs */
+.header-tabs .MuiTabs-indicator {
+  display: none !important;
+}
+
+.header-tabs .MuiTab-root {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  font-size: 0.9rem !important;
+  min-height: 48px !important;
+  border-radius: 24px !important;
+  margin: 2px !important;
+  transition: all 0.3s ease !important;
+  min-width: auto !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.header-tabs .MuiTab-root:hover {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.header-tabs .MuiTab-root.Mui-selected {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Highlighted Tab (AI Planner) */
+.header-tab-highlight {
+  background: linear-gradient(
+    45deg,
+    #f5362e,
+    #77cbfe,
+    #0484d6,
+    #072b80
+  ) !important;
+  border-radius: 20px !important;
+  margin: 2px !important;
+}
+
+.header-tab-highlight:hover {
+  background: linear-gradient(
+    45deg,
+    #f5362e,
+    #77cbfe,
+    #0484d6,
+    #072b80
+  ) !important;
+  opacity: 0.9 !important;
+}
+
+/* Right Section (Weather + Menu) */
+.header-right-section {
+  position: absolute !important;
+  right: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+@media (min-width: 900px) {
+  .header-right-section {
+    right: 32px !important;
+  }
+}
+
+/* Menu Button */
+.header-menu-button {
+  color: white !important;
+}
+
+.header-menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.header-menu-icon {
+  font-size: 1.8rem !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 899px) {
+  .header-nav-container {
+    display: none !important;
+  }
+}

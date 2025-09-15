@@ -3,24 +3,26 @@ import {
   Box,
   Typography,
   TextField,
-  IconButton,
+  Button,
   Paper,
   List,
   ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
-  Divider,
-  Chip,
-  InputAdornment,
   Fab,
-  CircularProgress
+  IconButton,
+  InputAdornment,
+  Chip,
+  CircularProgress,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import {
   Send as SendIcon,
   Add as AddIcon,
-  MoreVert as MoreVertIcon,
-  Search as SearchIcon
+  Search as SearchIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
@@ -28,12 +30,30 @@ import maduIcon from '../assets/images/madu-icon-C6gC6UIY.png';
 import apiService from '../services/api';
 import './AIPlanner.css';
 
+const sabahanPrompts = [
+  "MaduAI, bah. Pintar ni.",
+  "Jawapan ngam-ngam, manis macam madu.",
+  "Otak AI, hati Sabahan.",
+  "Bijak punya AI, untuk kau saja.",
+  "Oi! Saya MaduAI. Apa cerita? Kasi tau saya apa kau mau cari.",
+  "Selamat datang! Saya MaduAI. Tanya saja apa-apa, boleh bah kalau kau!",
+  "Macam madu dari Gunung Kinabalu, saya sini untuk kasi jawapan yang paling 'fresh'. Kau tanya, saya jawab.",
+  "Jangan pusing-pusing kepala sudah. Kasi MaduAI tolong kau cari. Senang cerita.",
+  "Kau ada soalan? Saya ada jawapan manis. Terus kita settle, nda payah lama-lama.",
+  "Info yang kau mau, saya kasi yang paling mantap. Macam tu lah, kan?",
+  "Adui, susah betul soalan kau... Tapi relax, saya MaduAI. Confirm boleh jawab punya!",
+  "Saya ni AI, tapi kalau sembang macam orang sebelah rumah kau saja, kan? Nah, tanya sudah.",
+  "Kau jangan risau, saya bukan kaleng-kaleng punya AI. Ini original Sabahan tech, bah!",
+];
+
+const getRandomPrompt = () => sabahanPrompts[Math.floor(Math.random() * sabahanPrompts.length)];
+
 const AIPlanner = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm Madu, your AI travel assistant for Sabah! How can I help you plan your adventure today?",
+      text: getRandomPrompt(),
       sender: 'ai',
       timestamp: new Date().toLocaleTimeString()
     }
@@ -41,14 +61,201 @@ const AIPlanner = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userId] = useState('user_' + Math.random().toString(36).substr(2, 9));
-  const [chatHistory, setChatHistory] = useState([
-    { id: 1, title: 'MaduAI', lastMessage: 'Your AI travel assistant for Sabah', timestamp: 'Active now', active: true }
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [currentChatId, setCurrentChatId] = useState(null);
+  const [isBackendOnline, setIsBackendOnline] = useState(true);
+  const [lastHealthCheck, setLastHealthCheck] = useState(new Date());
   const messagesEndRef = useRef(null);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  // Function to load chat history from backend
+  const loadChatHistory = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/ai/history/${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.history.length > 0) {
+          // Convert backend history to frontend format
+          const formattedHistory = [];
+          let currentChat = null;
+          
+          data.history.forEach((entry, index) => {
+            if (!currentChat || index % 10 === 0) { // Group every 10 messages into a chat
+              currentChat = {
+                id: Math.floor(index / 10) + 1,
+                // Use AI-generated title from backend, fallback to user message if not available
+                title: entry.title || (entry.user_message.length > 30 ? 
+                  entry.user_message.substring(0, 30) + '...' : 
+                  entry.user_message),
+                lastMessage: entry.ai_response.length > 50 ? 
+                  entry.ai_response.substring(0, 50) + '...' : 
+                  entry.ai_response,
+                timestamp: new Date(entry.timestamp).toLocaleDateString(),
+                active: false,
+                messages: []
+              };
+              formattedHistory.push(currentChat);
+            }
+            
+            // Add user message
+            currentChat.messages.push({
+              id: currentChat.messages.length + 1,
+              text: entry.user_message,
+              sender: 'user',
+              timestamp: new Date(entry.timestamp).toLocaleTimeString()
+            });
+            
+            // Add AI response
+            currentChat.messages.push({
+              id: currentChat.messages.length + 1,
+              text: entry.ai_response,
+              sender: 'ai',
+              timestamp: new Date(entry.timestamp).toLocaleTimeString()
+            });
+          });
+          
+          if (formattedHistory.length > 0) {
+            setChatHistory(formattedHistory);
+            // Set the most recent chat as active
+            const mostRecentChat = formattedHistory[formattedHistory.length - 1];
+            mostRecentChat.active = true;
+            setCurrentChatId(mostRecentChat.id);
+            setMessages(mostRecentChat.messages);
+          }
+        } else {
+          // No history, create default chat
+          createNewChat();
+        }
+      } else {
+        console.error('Failed to load chat history');
+        createNewChat();
+      }
+    } catch (error) {
+      console.error('Error loading chat history:', error);
+      createNewChat();
+    }
+  };
+
+  // Function to create a new chat
+  const createNewChat = () => {
+    const newChatId = chatHistory.length + 1;
+    const newChat = {
+      id: newChatId,
+      title: 'New Chat',
+      lastMessage: 'Start a conversation...',
+      timestamp: 'Now',
+      active: true,
+      messages: [
+        {
+          id: 1,
+          text: getRandomPrompt(),
+          sender: 'ai',
+          timestamp: new Date().toLocaleTimeString()
+        }
+      ]
+    };
+
+    // Deactivate all other chats
+    const updatedHistory = chatHistory.map(chat => ({ ...chat, active: false }));
+    updatedHistory.push(newChat);
+    
+    setChatHistory(updatedHistory);
+    setCurrentChatId(newChatId);
+    setMessages(newChat.messages);
+  };
+
+  // Function to update current chat in history
+  const updateCurrentChatInHistory = (newMessages) => {
+    setChatHistory(prev => 
+      prev.map(chat => {
+        if (chat.id === currentChatId) {
+          const lastMessage = newMessages[newMessages.length - 1];
+          return {
+            ...chat,
+            // Keep existing AI-generated title, only update if it's still "New Chat"
+            title: chat.title === 'New Chat' && newMessages.length > 2 ? 
+              (newMessages[1].text.length > 30 ? 
+                newMessages[1].text.substring(0, 30) + '...' : 
+                newMessages[1].text) : 
+              chat.title,
+            lastMessage: lastMessage.text.length > 50 ? 
+              lastMessage.text.substring(0, 50) + '...' : 
+              lastMessage.text,
+            timestamp: lastMessage.timestamp,
+            messages: newMessages
+          };
+        }
+        return chat;
+      })
+    );
+  };
+
+
+
+  // Function to delete a single chat
+  const deleteSingleChat = (chatId) => {
+    try {
+      // Remove the specific chat from frontend state
+      const updatedChatHistory = chatHistory.filter(chat => chat.id !== chatId);
+      setChatHistory(updatedChatHistory);
+      
+      // If the deleted chat was the active one, switch to another chat or create new one
+      if (currentChatId === chatId) {
+        if (updatedChatHistory.length > 0) {
+          // Switch to the most recent remaining chat
+          const mostRecentChat = updatedChatHistory[0];
+          setCurrentChatId(mostRecentChat.id);
+          setMessages(mostRecentChat.messages || []);
+        } else {
+          // No chats left, create a new one
+          createNewChat();
+        }
+      }
+      
+      console.log(`Chat ${chatId} deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+    }
+  };
+
+  // Function to check backend health
+  const checkBackendHealth = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/health', {
+        method: 'GET',
+        timeout: 5000, // 5 second timeout
+      });
+      
+      if (response.ok) {
+        setIsBackendOnline(true);
+      } else {
+        setIsBackendOnline(false);
+      }
+      setLastHealthCheck(new Date());
+    } catch (error) {
+      console.log('Backend health check failed:', error);
+      setIsBackendOnline(false);
+      setLastHealthCheck(new Date());
+    }
+  };
+
+  // Periodic health check
+  useEffect(() => {
+    // Initial health check
+    checkBackendHealth();
+    
+    // Load chat history on component mount
+    loadChatHistory();
+    
+    // Set up interval for periodic checks (every 30 seconds)
+    const healthCheckInterval = setInterval(checkBackendHealth, 30000);
+    
+    // Cleanup interval on component unmount
+    return () => clearInterval(healthCheckInterval);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -67,7 +274,10 @@ const AIPlanner = () => {
         timestamp: new Date().toLocaleTimeString()
       };
       
-      setMessages(prev => [...prev, userMessage]);
+      const newMessages = [...messages, userMessage];
+      setMessages(newMessages);
+      updateCurrentChatInHistory(newMessages);
+      
       const currentMessage = inputMessage;
       setInputMessage('');
       setIsLoading(true);
@@ -81,24 +291,33 @@ const AIPlanner = () => {
         
         if (response.success) {
           const aiResponse = {
-            id: messages.length + 2,
+            id: newMessages.length + 1,
             text: response.response,
             sender: 'ai',
             timestamp: new Date().toLocaleTimeString()
           };
-          setMessages(prev => [...prev, aiResponse]);
+          const finalMessages = [...newMessages, aiResponse];
+          setMessages(finalMessages);
+          updateCurrentChatInHistory(finalMessages);
+          
+          // Reload chat history to get AI-generated title from backend
+          setTimeout(() => {
+            loadChatHistory();
+          }, 500);
         } else {
           throw new Error(response.error || 'Failed to get AI response');
         }
       } catch (error) {
         console.error('Error sending message:', error);
         const errorResponse = {
-          id: messages.length + 2,
+          id: newMessages.length + 1,
           text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
           sender: 'ai',
           timestamp: new Date().toLocaleTimeString()
         };
-        setMessages(prev => [...prev, errorResponse]);
+        const finalMessages = [...newMessages, errorResponse];
+        setMessages(finalMessages);
+        updateCurrentChatInHistory(finalMessages);
       } finally {
         setIsLoading(false);
       }
@@ -113,9 +332,14 @@ const AIPlanner = () => {
   };
 
   const handleChatSelect = (chatId) => {
-    setChatHistory(prev => 
-      prev.map(chat => ({ ...chat, active: chat.id === chatId }))
-    );
+    const selectedChat = chatHistory.find(chat => chat.id === chatId);
+    if (selectedChat) {
+      setChatHistory(prev => 
+        prev.map(chat => ({ ...chat, active: chat.id === chatId }))
+      );
+      setCurrentChatId(chatId);
+      setMessages(selectedChat.messages);
+    }
   };
 
   return (
@@ -127,12 +351,21 @@ const AIPlanner = () => {
         {/* Chat History Sidebar */}
         <Paper className="chat-history-sidebar" elevation={2}>
           <Box className="chat-history-header">
-            <Typography variant="h6" className="chat-history-title">
-              Chat History
-            </Typography>
-            <Fab size="small" color="primary" className="new-chat-btn">
-              <AddIcon />
-            </Fab>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, width: '100%' }}>
+              <Typography variant="h6" className="chat-history-title">
+                Chat History
+              </Typography>
+              <Fab
+                size="small"
+                color="primary"
+                aria-label="new chat"
+                onClick={createNewChat}
+                title="Start new chat"
+                sx={{ ml: 'auto' }}
+              >
+                <AddIcon />
+              </Fab>
+            </Box>
           </Box>
           
           <Box className="search-container">
@@ -152,32 +385,72 @@ const AIPlanner = () => {
           </Box>
           
           <List className="chat-history-list">
-            {chatHistory.map((chat) => (
-              <ListItem
-                key={chat.id}
-                className={`chat-history-item ${chat.active ? 'active' : ''}`}
-                onClick={() => handleChatSelect(chat.id)}
-              >
-                <ListItemAvatar>
-                  <Avatar className="chat-avatar">
-                    <img src={maduIcon} alt="Madu" style={{ width: '100%', height: '100%' }} />
-                  </Avatar>
-                </ListItemAvatar>
+            {chatHistory.length === 0 ? (
+              <ListItem>
                 <ListItemText
-                  primary={chat.title}
-                  secondary={
-                    <Box component="span">
-                      <Typography variant="body2" component="span" className="last-message" sx={{ display: 'block' }}>
-                        {chat.lastMessage}
-                      </Typography>
-                      <Typography variant="caption" component="span" className="timestamp" sx={{ display: 'block' }}>
-                        {chat.timestamp}
-                      </Typography>
-                    </Box>
-                  }
+                  primary="No chat history"
+                  secondary="Start a new conversation by clicking the + button"
+                  sx={{ textAlign: 'center', color: 'text.secondary' }}
                 />
               </ListItem>
-            ))}
+            ) : (
+              chatHistory.map((chat) => (
+                <ListItem
+                  key={chat.id}
+                  className={`chat-history-item ${chat.active ? 'active' : ''}`}
+                  sx={{ 
+                    position: 'relative'
+                  }}
+                >
+                  <Box 
+                    sx={{ display: 'flex', width: '100%', alignItems: 'center' }}
+                    onClick={() => handleChatSelect(chat.id)}
+                  >
+                    <ListItemAvatar>
+                      <Avatar className="chat-avatar">
+                        <img src={maduIcon} alt="Madu" style={{ width: '100%', height: '100%' }} />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={chat.title}
+                      secondary={
+                        <Box component="span">
+                          <Typography variant="body2" component="span" className="last-message" sx={{ display: 'block' }}>
+                            {chat.lastMessage}
+                          </Typography>
+                          <Typography variant="caption" component="span" className="timestamp" sx={{ display: 'block' }}>
+                            {chat.timestamp}
+                          </Typography>
+                        </Box>
+                      }
+                    />
+                  </Box>
+                  <IconButton
+                    className="delete-chat-btn"
+                    size="small"
+                    color="error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteSingleChat(chat.id);
+                    }}
+                    sx={{
+                      opacity: 1,
+                      transition: 'all 0.2s',
+                      position: 'absolute',
+                      right: 8,
+                      '&:hover': {
+                        backgroundColor: 'error.light',
+                        color: 'white',
+                        transform: 'scale(1.1)'
+                      }
+                    }}
+                    title="Delete this chat"
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </ListItem>
+              ))
+            )}
           </List>
         </Paper>
 
@@ -191,18 +464,19 @@ const AIPlanner = () => {
               </Avatar>
               <Box className="chat-info">
                 <Typography variant="h6" className="chat-title">
-                  Madu - AI Travel Assistant
+                  MaduAI: Your personal Guide, tapi yang boleh sembang macam kawan-kawan
                 </Typography>
                 <Box className="status-container">
-                  <Chip label="Online" size="small" className="online-status" />
+                  <Chip 
+                    label={isBackendOnline ? "Online" : "Offline"} 
+                    size="small" 
+                    className={isBackendOnline ? "online-status" : "offline-status"} 
+                  />
                   <Typography variant="caption" className="status-text">
-                    Specialized in Sabah tourism
+                    {isBackendOnline ? "Ready to help with your adventures!" : "Backend unavailable"}
                   </Typography>
                 </Box>
               </Box>
-              <IconButton className="chat-options">
-                <MoreVertIcon />
-              </IconButton>
             </Box>
           </Paper>
 
@@ -256,7 +530,7 @@ const AIPlanner = () => {
                 fullWidth
                 multiline
                 maxRows={4}
-                placeholder="Ask Madu about your Sabah adventure..."
+                placeholder="What would you like to know or plan for your adventure?"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}

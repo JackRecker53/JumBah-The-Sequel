@@ -51,7 +51,7 @@ const Weather = () => {
     setError(null);
     
     try {
-      const response = await fetch(`http://localhost:5000/api/weather?lat=${latitude}&lon=${longitude}`);
+      const response = await fetch(`http://localhost:8000/api/weather?lat=${latitude}&lon=${longitude}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');

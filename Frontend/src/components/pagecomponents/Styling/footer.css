@@ -1,0 +1,109 @@
+/* Footer Component Styles */
+
+/* Main Footer Container */
+.footer-container {
+  background-color: #77cbfe !important;
+  color: white !important;
+  padding-top: 48px !important;
+  padding-bottom: 48px !important;
+}
+
+/* Footer Content Container */
+.footer-content {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+@media (min-width: 900px) {
+  .footer-content {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+/* Section Headings */
+.footer-section-heading {
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+}
+
+/* About Section Text */
+.footer-about-text {
+  margin-bottom: 16px !important;
+  line-height: 1.6 !important;
+}
+
+.footer-about-text-secondary {
+  line-height: 1.6 !important;
+}
+
+/* Contact Info Items */
+.footer-contact-item {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+}
+
+.footer-contact-item-last {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 16px !important;
+}
+
+.footer-contact-icon {
+  margin-right: 8px !important;
+  font-size: 1rem !important;
+}
+
+.footer-emergency-text {
+  font-size: 0.875rem !important;
+}
+
+/* Social Media Section */
+.footer-social-container {
+  display: flex !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.footer-social-button {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.footer-social-button:hover.facebook {
+  background-color: #3b5998 !important;
+}
+
+.footer-social-button:hover.instagram {
+  background-color: #E4405F !important;
+}
+
+.footer-social-button:hover.twitter {
+  background-color: #1DA1F2 !important;
+}
+
+.footer-social-button:hover.youtube {
+  background-color: #FF0000 !important;
+}
+
+.footer-social-text {
+  font-size: 0.875rem !important;
+}
+
+/* Divider */
+.footer-divider {
+  margin-top: 32px !important;
+  margin-bottom: 32px !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Copyright Section */
+.footer-copyright-container {
+  text-align: center !important;
+}
+
+.footer-copyright-text {
+  opacity: 0.8 !important;
+}
