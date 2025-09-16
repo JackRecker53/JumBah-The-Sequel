@@ -1,90 +1,87 @@
-import React, { useState } from 'react';
-import { 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  Box, 
-  Button, 
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Button,
   IconButton,
   useTheme,
   useMediaQuery,
   Tabs,
   Tab,
-  Chip
-} from '@mui/material';
-import { 
+  Chip,
+} from "@mui/material";
+import {
   Menu as MenuIcon,
   Explore as ExploreIcon,
   AutoAwesome as AutoAwesomeIcon,
-  Map as MapIcon
-} from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Weather from '../Weather';
-import './Styling/header.css';
+  Map as MapIcon,
+} from "@mui/icons-material";
+import { useNavigate, useLocation } from "react-router-dom";
+import Weather from "../Weather";
+import "./Styling/header.css";
 
 const Header = ({ onSidebarToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   // Determine active tab based on current route
   const getActiveTab = () => {
     const path = location.pathname;
-    if (path === '/adventure') return 0;
-    if (path === '/aiplanner') return 1;
-    if (path === '/map') return 2;
-    if (path === '/navigation') return 3;
+    if (path === "/adventure") return 0;
+    if (path === "/aiplanner") return 1;
+    if (path === "/map") return 2;
+    if (path === "/navigation") return 3;
     return false;
   };
 
   const handleTabChange = (event, newValue) => {
-    const paths = ['/adventure', '/aiplanner', '/map', '/navigation'];
+    const paths = ["/adventure", "/aiplanner", "/map", "/navigation"];
     navigate(paths[newValue]);
   };
 
   const navigationTabs = [
-    { 
-      label: 'Adventure', 
-      value: 'adventure', 
-      path: '/adventure', 
+    {
+      label: "Adventure",
+      value: "adventure",
+      path: "/adventure",
       icon: <ExploreIcon />,
-      description: 'Discover experiences'
+      description: "Discover experiences",
     },
-    { 
-      label: 'AI Planner', 
-      value: 'aiplanner', 
-      path: '/aiplanner', 
+    {
+      label: "AI Planner",
+      value: "aiplanner",
+      path: "/aiplanner",
       icon: <AutoAwesomeIcon />,
-      description: 'Smart trip planning',
-      highlight: true 
+      description: "Smart trip planning",
+      highlight: true,
     },
-    { 
-      label: 'Map', 
-      value: 'map', 
-      path: '/map', 
+    {
+      label: "Map",
+      value: "map",
+      path: "/map",
       icon: <MapIcon />,
-      description: 'Explore locations'
-    }
+      description: "Explore locations",
+    },
   ];
 
   return (
-    <AppBar 
-      position="fixed" 
+    <AppBar
+      position="fixed"
       className="header-appbar"
       sx={{ zIndex: theme.zIndex.drawer + 1 }}
     >
       <Toolbar className="header-toolbar">
         {/* Logo Section - Positioned absolutely on the left */}
-        <Box 
-          className="header-logo-container"
-          onClick={() => navigate('/')}
-        >
-          <img 
-             src="./src/assets/images/jumbahlogov2-removebg-preview.png" 
-             alt="Jumbah Logo" 
-             className="header-logo"
-           />
+        <Box className="header-logo-container" onClick={() => navigate("/")}>
+          <img
+            src="./src/assets/images/jumbahlogov2-removebg-preview.png"
+            alt="Jumbah Logo"
+            className="header-logo"
+          />
         </Box>
 
         {/* Navigation Tabs - Centered */}
@@ -101,7 +98,7 @@ const Header = ({ onSidebarToggle }) => {
                   icon={tab.icon}
                   label={tab.label}
                   iconPosition="start"
-                  className={tab.highlight ? 'header-tab-highlight' : ''}
+                  className={tab.highlight ? "header-tab-highlight" : ""}
                 />
               ))}
             </Tabs>
