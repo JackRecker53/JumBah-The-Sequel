@@ -212,7 +212,7 @@ const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState(['all']);
+  const [selectedCategories, setSelectedCategories] = useState(['All']);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const [locationError, setLocationError] = useState(null);
@@ -291,7 +291,7 @@ const Map = () => {
     { name: 'Penampang', address: 'Penampang, Sabah', type: 'Town', position: [5.9167, 116.1167] }
   ];
   
-  const categories = ['all', 'Nature', 'Marine', 'Wildlife', 'Cultural', 'Music'];
+  const categories = ['All', 'Nature', 'Marine', 'Wildlife', 'Cultural'];
   
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -362,14 +362,14 @@ const Map = () => {
   }, [searchQuery]);
   
   const handleCategoryToggle = (category) => {
-    if (category === 'all') {
-      setSelectedCategories(['all']);
+    if (category === 'All') {
+      setSelectedCategories(['All']);
     } else {
       const newCategories = selectedCategories.includes(category)
         ? selectedCategories.filter(c => c !== category)
-        : [...selectedCategories.filter(c => c !== 'all'), category];
+        : [...selectedCategories.filter(c => c !== 'All'), category];
       
-      setSelectedCategories(newCategories.length === 0 ? ['all'] : newCategories);
+      setSelectedCategories(newCategories.length === 0 ? ['All'] : newCategories);
     }
   };
   
@@ -436,7 +436,7 @@ const Map = () => {
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         location.description.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesCategory = selectedCategories.includes('all') ||
+      const matchesCategory = selectedCategories.includes('All') ||
                              selectedCategories.includes(location.category) ||
                              selectedCategories.includes(location.type);
       

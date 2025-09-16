@@ -14,6 +14,9 @@ import { styled } from '@mui/material/styles';
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 345,
   margin: theme.spacing(1),
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
   transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
   '&:hover': {
     transform: 'translateY(-4px)',
@@ -45,11 +48,16 @@ const QuestCard = ({ quest, onStartQuest, isCompleted = false }) => {
         alt={quest.title}
         sx={{ objectFit: 'cover' }}
       />
-      <CardContent>
+      <CardContent sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        flex: 1,
+        padding: '16px !important'
+      }}>
         <Typography gutterBottom variant="h6" component="div">
           {quest.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flex: 1 }}>
           {quest.description}
         </Typography>
         
@@ -74,7 +82,7 @@ const QuestCard = ({ quest, onStartQuest, isCompleted = false }) => {
           />
         </Stack>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 'auto' }}>
           <Button 
             variant={isCompleted ? "outlined" : "contained"}
             color={isCompleted ? "success" : "primary"}

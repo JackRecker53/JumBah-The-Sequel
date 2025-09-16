@@ -6,6 +6,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
+from utils.response_formatter import ResponseFormatter
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'AIPlanner Format'))
+from navigation_helper import NavigationHelper
+from food_recommendations import FoodRecommendations
 
 # Load environment variables
 load_dotenv()
@@ -40,7 +46,7 @@ class AIPlanner:
         self.itinerary_prompt = ChatPromptTemplate.from_messages([
             (
                 "system",
-                "You are MaduAI, an expert travel planner for Sabah, Malaysia. When users request itineraries or detailed travel plans, provide comprehensive, well-structured responses in the following format:\n\n## 📍 [Destination] - [Duration] Itinerary\n\n### Day 1: [Theme/Focus]\n**Morning (9:00 AM - 12:00 PM)**\n• Activity 1 - Brief description\n• Activity 2 - Brief description\n\n**Afternoon (1:00 PM - 5:00 PM)**\n• Activity 3 - Brief description\n• Activity 4 - Brief description\n\n**Evening (6:00 PM - 9:00 PM)**\n• Activity 5 - Brief description\n\n### 🏨 Accommodation Recommendations\n• **Budget Option**: [Name] - [Price range] - [Brief description]\n• **Mid-range Option**: [Name] - [Price range] - [Brief description]\n• **Luxury Option**: [Name] - [Price range] - [Brief description]\n\n### 🍽️ Must-Try Local Food\n• **Dish 1** - Where to find it\n• **Dish 2** - Where to find it\n\n### 💰 Estimated Budget\n• **Budget traveler**: RM [amount] per day\n• **Mid-range traveler**: RM [amount] per day\n• **Luxury traveler**: RM [amount] per day\n\n### 📝 Important Tips\n• Tip 1\n• Tip 2\n• Tip 3\n\n### 🔗 Useful Links & Bookings\n┌─────────────────────────────────────────────────────────────┐\n│ 📱 **Quick Access Links**                                   │\n│ • Book Hotels: https://www.booking.com/city/my/kota-kinabalu │\n│ • Flight Tickets: https://www.skyscanner.com                │\n│ • Local Tours: https://www.klook.com/city/20-kota-kinabalu  │\n│ • Car Rental: https://www.rentalcars.com                    │\n│ • Weather Info: https://weather.com/weather/today/l/kota+kinabalu │\n└─────────────────────────────────────────────────────────────┘\n\nAlways focus on authentic Sabah experiences, local culture, and practical advice."
+                "You are MaduAI, an expert travel planner for Sabah, Malaysia. When users request itineraries, provide detailed, day-by-day plans with specific activities, times, and locations. Always include:\n\n1. **Day-by-day breakdown** with specific times (Morning 9:00 AM - 12:00 PM, Afternoon 1:00 PM - 5:00 PM, Evening 6:00 PM - 9:00 PM)\n2. **Specific activities** with clear descriptions\n3. **Exact locations** and addresses where possible\n4. **Transportation details** between locations\n5. **Budget estimates** for each activity\n6. **Local food recommendations** with restaurant names\n7. **Practical tips** for each day\n\nFormat your response as:\n\nDay 1: [Theme]\nMorning (9:00 AM - 12:00 PM): [Specific activity with location]\nAfternoon (1:00 PM - 5:00 PM): [Specific activity with location]\nEvening (6:00 PM - 9:00 PM): [Specific activity with location]\n\nDay 2: [Theme]\n[Continue with same format]\n\nBudget: RM[amount] for [duration]\n\nPro Tips:\n• [Practical tip 1]\n• [Practical tip 2]\n\nAlways provide specific, actionable information that travelers can follow immediately."
             ),
             (
                 "human",
@@ -362,12 +368,21 @@ class AIPlanner:
             # Generate response
             response = await chain.ainvoke({"input": full_message})
             
+            # Use specialized helpers for specific query types
+            if response_type == "directions" or "direction" in message.lower():
+                formatted_response = NavigationHelper.format_directions_response(message, response.content)
+            elif response_type == "food" or "food" in message.lower() or "restaurant" in message.lower():
+                formatted_response = FoodRecommendations.format_food_response(message, response.content)
+            else:
+                # Format the response based on type
+                formatted_response = ResponseFormatter.format_response(response.content, response_type)
+            
             # Save to history
-            await self._save_to_history(user_id, message, response.content, response_type)
+            await self._save_to_history(user_id, message, formatted_response, response_type)
             
             return {
                 "success": True,
-                "response": response.content,
+                "response": formatted_response,
                 "timestamp": datetime.now().isoformat(),
                 "response_type": response_type
             }

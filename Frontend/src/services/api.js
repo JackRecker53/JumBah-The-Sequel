@@ -93,25 +93,25 @@ class ApiService {
 
   // AI Planner Services
   async generateTravelPlan(planRequest) {
-    return this.request('/ai/generate-plan', {
+    return this.request('/ai-planner/generate-plan', {
       method: 'POST',
       body: JSON.stringify(planRequest)
     });
   }
 
   async chatWithAI(chatRequest) {
-    return this.request('/ai/chat', {
+    return this.request('/ai-planner/chat', {
       method: 'POST',
       body: JSON.stringify(chatRequest)
     });
   }
 
   async getChatHistory(userId) {
-    return this.request(`/ai/history/${userId}`);
+    return this.request(`/ai-planner/history/${userId}`);
   }
 
   async checkAIHealth() {
-    return this.request('/ai/health');
+    return this.request('/ai-planner/health');
   }
 
   // Health check

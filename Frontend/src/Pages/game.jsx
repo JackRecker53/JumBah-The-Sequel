@@ -481,9 +481,9 @@ const Game = () => {
 
         {/* Content based on current view */}
         {currentView === 'quests' && (
-          <Grid container spacing={3} sx={{ mt: 2 }}>
+          <Grid container spacing={3} sx={{ mt: 2, alignItems: 'stretch' }}>
             {questsData.map((quest) => (
-              <Grid item xs={12} sm={6} md={4} key={quest.id}>
+              <Grid item xs={12} sm={6} md={4} key={quest.id} sx={{ display: 'flex' }}>
                 <QuestCard
                   quest={quest}
                   onStartQuest={handleStartQuest}

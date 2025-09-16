@@ -50,6 +50,20 @@
   transform: scale(1.05);
 }
 
+
+/* Individual chat item delete button */
+.chat-history-item:hover .chat-item-actions {
+  opacity: 1 !important;
+}
+
+.delete-individual-chat-btn {
+  transition: all 0.2s ease;
+}
+
+.delete-individual-chat-btn:hover {
+  transform: scale(1.1);
+}
+
 .search-container {
   padding: 16px;
   border-bottom: 1px solid #f0f0f0;
@@ -153,6 +167,7 @@
 .chat-info {
   flex: 1;
 }
+
 
 .chat-title {
   font-weight: 600 !important;
@@ -274,6 +289,58 @@
   border-bottom-right-radius: 6px;
 }
 
+/* Formatted Message Styles */
+.formatted-message {
+  line-height: 1.6;
+}
+
+.formatted-message h2 {
+  color: #1976d2 !important;
+  margin: 16px 0 8px 0 !important;
+  font-size: 1.2em !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #e3f2fd;
+  padding-bottom: 8px;
+}
+
+.formatted-message h3 {
+  color: #424242 !important;
+  margin: 12px 0 6px 0 !important;
+  font-size: 1.1em !important;
+  font-weight: 600 !important;
+}
+
+.formatted-message h4 {
+  color: #666 !important;
+  margin: 8px 0 4px 0 !important;
+  font-size: 1em !important;
+  font-weight: 600 !important;
+}
+
+.formatted-message strong {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.formatted-message hr {
+  border: none !important;
+  border-top: 1px solid #e0e0e0 !important;
+  margin: 16px 0 !important;
+}
+
+.formatted-message div {
+  margin: 4px 0 !important;
+  padding-left: 16px !important;
+  position: relative !important;
+}
+
+.formatted-message div span {
+  position: absolute !important;
+  left: 0 !important;
+  color: #1976d2 !important;
+  font-weight: 600 !important;
+}
+
 .message-timestamp {
   margin-top: 4px;
   color: #999 !important;
@@ -282,6 +349,38 @@
 
 .user-message .message-timestamp {
   text-align: right;
+}
+
+/* Quick Prompts */
+.quick-prompts-container {
+  padding: 16px 24px 0;
+  background: white;
+}
+
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-prompt-chip {
+  background: #f5f5f5 !important;
+  color: #666 !important;
+  border: 1px solid #e0e0e0 !important;
+  font-size: 0.8rem !important;
+  height: 32px !important;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-prompt-chip:hover {
+  background: #2196f3 !important;
+  color: white !important;
+  border-color: #2196f3 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3) !important;
 }
 
 /* Input Area */

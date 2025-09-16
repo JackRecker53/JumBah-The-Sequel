@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2025-09-16T17:57:45.520912",
+    "user_message": "Can you give me the direction to Imago Shopping Mall?",
+    "ai_response": "## 💬 **MaduAI Response**\n\nSelamat datang! Imago tu senang saja cari bah! Kalau kau di bandar KK, jalan ja lurus ke arah Tanjung Aru, nanti kau nampak bangunan besar tu di sebelah kiri kau. Nda payah pusing-pusing!\n\n",
+    "type": "casual"
+  },
+  {
+    "timestamp": "2025-09-16T17:58:10.523345",
+    "user_message": "Where can I watch the sunset in KK?",
+    "ai_response": "## 💬 **MaduAI Response**\n\nOi, geng! Kalau mau tengok sunset di KK, mesti pigi **Tanjung Aru Beach** tu, *confirm* lawa gila! Boleh juga lepak-lepak di **KK Waterfront** sambil minum-minum. Ngam-ngam!\n\n",
+    "type": "casual"
+  },
+  {
+    "timestamp": "2025-09-16T17:59:07.893382",
+    "user_message": "Give me an itinerary for 3 days trip with a budget of RM5000",
+    "ai_response": "## 🗺️ **Your Sabah Adventure Itinerary**\n\n### 💰 **Budget: RM5000**\n\n### 📅 **Day 1**\n\n### 📅 **Day 2**\n\n### 📅 **Day 3**\n\n**Morning**\n• (9:00 AM - 12:00 PM)**\n\n**Afternoon**\n• (1:00 PM - 5:00 PM)**\n\n**Evening**\n• (6:00 PM - 9:00 PM)**\n\n**9:00 AM**\n• 12:00 PM)**\n\n**1:00 PM**\n• 5:00 PM)**\n\n**6:00 PM**\n• 9:00 PM)**\n\n**00 AM**\n• 12:00 PM)**\n\n**00 PM**\n• 5:00 PM)**\n\n**00 PM**\n• 9:00 PM)**\n\n### 📅 **Day 4**\n\n**Morning**\n• (9:00 AM - 12:00 PM)**\n\n**Afternoon**\n• (1:00 PM - 5:00 PM)**\n\n**Evening**\n• (6:00 PM - 9:00 PM)**\n\n**9:00 AM**\n• 12:00 PM)**\n\n**1:00 PM**\n• 5:00 PM)**\n\n**6:00 PM**\n• 9:00 PM)**\n\n**00 AM**\n• 12:00 PM)**\n\n**00 PM**\n• 5:00 PM)**\n\n**00 PM**\n• 9:00 PM)**\n\n### 📅 **Day 5**\n\n**Morning**\n• (9:00 AM - 12:00 PM)**\n\n**Afternoon**\n• (1:00 PM - 5:00 PM)**\n\n**Evening**\n• (6:00 PM - 9:00 PM)**\n\n**9:00 AM**\n• 12:00 PM)**\n\n**1:00 PM**\n• 5:00 PM)**\n\n**6:00 PM**\n• 9:00 PM)**\n\n**00 AM**\n• 12:00 PM)**\n\n**00 PM**\n• 5:00 PM)**\n\n**00 PM**\n• 9:00 PM)**\n\n### 📅 **Day 8**\n\n### 📅 **Day 9**\n\n### 📅 **Day 10**\n\n### 💡 **Pro Tips**\n\n• le pools, an excellent spa, and diverse dining options, perfect for a luxurious stay close to the city.\n",
+    "type": "itinerary"
+  }
+]

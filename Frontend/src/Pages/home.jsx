@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -48,11 +49,16 @@ import sipadanDivingImage from '../assets/images/pulau sipadan.jpg';
 import '@splidejs/react-splide/css';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleStartAdventure = () => {
+    navigate('/adventure');
   };
 
   // Hero slideshow images
@@ -302,6 +308,7 @@ const Home = () => {
           <Button
             variant="contained"
             size="large"
+            onClick={handleStartAdventure}
             sx={{
               background: 'linear-gradient(45deg, #f5362e, #77cbfe)',
               color: 'white',

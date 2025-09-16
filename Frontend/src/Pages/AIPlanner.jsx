@@ -46,6 +46,51 @@ const sabahanPrompts = [
 
 const getRandomPrompt = () => sabahanPrompts[Math.floor(Math.random() * sabahanPrompts.length)];
 
+// Function to format AI messages with proper styling
+const formatMessage = (text) => {
+  if (!text) return '';
+  
+  // Convert markdown-like formatting to HTML
+  let formatted = text
+    // Headers
+    .replace(/^## (.*$)/gim, '<h2 style="color: #1976d2; margin: 16px 0 8px 0; font-size: 1.2em; font-weight: 600;">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 style="color: #424242; margin: 12px 0 6px 0; font-size: 1.1em; font-weight: 600;">$1</h3>')
+    .replace(/^#### (.*$)/gim, '<h4 style="color: #666; margin: 8px 0 4px 0; font-size: 1em; font-weight: 600;">$1</h4>')
+    
+    // Bold text
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: #333;">$1</strong>')
+    
+    // Bullet points
+    .replace(/^• (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2;">•</span>$1</div>')
+    .replace(/^- (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2;">•</span>$1</div>')
+    
+    // Numbered lists
+    .replace(/^(\d+)\. (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2; font-weight: 600;">$1.</span>$2</div>')
+    
+    // Horizontal rules
+    .replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 16px 0;">')
+    
+    // Line breaks
+    .replace(/\n/g, '<br>')
+    
+    // Emojis and special formatting
+    .replace(/📍/g, '<span style="color: #4caf50;">📍</span>')
+    .replace(/💰/g, '<span style="color: #ff9800;">💰</span>')
+    .replace(/⭐/g, '<span style="color: #ffc107;">⭐</span>')
+    .replace(/🕒/g, '<span style="color: #2196f3;">🕒</span>')
+    .replace(/🍽️/g, '<span style="color: #e91e63;">🍽️</span>')
+    .replace(/🏆/g, '<span style="color: #9c27b0;">🏆</span>')
+    .replace(/🎯/g, '<span style="color: #f44336;">🎯</span>')
+    .replace(/💡/g, '<span style="color: #ffeb3b;">💡</span>')
+    .replace(/🗺️/g, '<span style="color: #00bcd4;">🗺️</span>')
+    .replace(/📱/g, '<span style="color: #607d8b;">📱</span>')
+    .replace(/📅/g, '<span style="color: #795548;">📅</span>')
+    .replace(/🏛️/g, '<span style="color: #3f51b5;">🏛️</span>')
+    .replace(/💬/g, '<span style="color: #009688;">💬</span>');
+  
+  return formatted;
+};
+
 const AIPlanner = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -72,7 +117,7 @@ const AIPlanner = () => {
   // Function to load chat history from backend
   const loadChatHistory = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/ai/history/${userId}`);
+      const response = await fetch(`http://localhost:8000/api/ai-planner/history/${userId}`);
       if (response.ok) {
         const data = await response.json();
         if (data.success && data.history.length > 0) {
@@ -124,21 +169,32 @@ const AIPlanner = () => {
           }
         } else {
           // No history, create default chat
+          console.log('No history found, creating default chat');
           createNewChat();
         }
       } else {
         console.error('Failed to load chat history');
+        console.log('Creating new chat due to failed history load');
         createNewChat();
       }
     } catch (error) {
       console.error('Error loading chat history:', error);
+      console.log('Creating new chat due to error');
       createNewChat();
     }
   };
 
   // Function to create a new chat
-  const createNewChat = () => {
-    const newChatId = chatHistory.length + 1;
+  const createNewChat = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    console.log('Creating new chat...');
+    
+    // Create new chat immediately without waiting for API calls
+    const newChatId = Date.now(); // Use timestamp for unique ID
     const newChat = {
       id: newChatId,
       title: 'New Chat',
@@ -162,6 +218,8 @@ const AIPlanner = () => {
     setChatHistory(updatedHistory);
     setCurrentChatId(newChatId);
     setMessages(newChat.messages);
+    
+    console.log('New chat created:', newChatId);
   };
 
   // Function to update current chat in history
@@ -189,14 +247,28 @@ const AIPlanner = () => {
     );
   };
 
-  // Function to delete chat history
-  const deleteChat = async () => {
+  // Function to delete all chat history
+  const deleteAllChats = async () => {
+    // Add confirmation dialog
+    if (!window.confirm('Are you sure you want to delete all chat history? This action cannot be undone.')) {
+      return;
+    }
+
     try {
-      const response = await fetch(`http://localhost:8000/api/ai/history/${userId}`, {
+      console.log('Attempting to delete all chat history for user:', userId);
+      const response = await fetch(`http://localhost:8000/api/ai-planner/history/${userId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       
+      console.log('Delete response status:', response.status);
+      
       if (response.ok) {
+        const result = await response.json();
+        console.log('Delete response:', result);
+        
         // Clear all chat history from frontend
         setChatHistory([]);
         setMessages([]);
@@ -205,13 +277,42 @@ const AIPlanner = () => {
         // Create a new chat to start fresh
         createNewChat();
         
-        console.log('Chat history deleted successfully');
+        console.log('All chat history deleted successfully');
+        alert('All chat history deleted successfully!');
       } else {
-        console.error('Failed to delete chat history');
+        const errorData = await response.json();
+        console.error('Failed to delete chat history:', errorData);
+        alert('Failed to delete chat history. Please try again.');
       }
     } catch (error) {
       console.error('Error deleting chat history:', error);
+      alert('Error deleting chat history. Please check your connection and try again.');
     }
+  };
+
+  // Function to delete individual chat
+  const deleteIndividualChat = (chatId) => {
+    if (!window.confirm('Are you sure you want to delete this chat? This action cannot be undone.')) {
+      return;
+    }
+
+    const updatedHistory = chatHistory.filter(chat => chat.id !== chatId);
+    setChatHistory(updatedHistory);
+
+    // If we're deleting the current chat, switch to another chat or create new one
+    if (currentChatId === chatId) {
+      if (updatedHistory.length > 0) {
+        const newCurrentChat = updatedHistory[updatedHistory.length - 1];
+        setCurrentChatId(newCurrentChat.id);
+        setMessages(newCurrentChat.messages);
+      } else {
+        setCurrentChatId(null);
+        setMessages([]);
+        createNewChat();
+      }
+    }
+
+    console.log(`Chat ${chatId} deleted successfully`);
   };
 
   // Function to check backend health
@@ -237,11 +338,16 @@ const AIPlanner = () => {
 
   // Periodic health check
   useEffect(() => {
+    // Create initial chat immediately
+    createNewChat();
+    
+    // Load chat history asynchronously (non-blocking)
+    setTimeout(() => {
+      loadChatHistory();
+    }, 100);
+    
     // Initial health check
     checkBackendHealth();
-    
-    // Load chat history on component mount
-    loadChatHistory();
     
     // Set up interval for periodic checks (every 30 seconds)
     const healthCheckInterval = setInterval(checkBackendHealth, 30000);
@@ -343,20 +449,15 @@ const AIPlanner = () => {
               Chat History
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <Fab size="small" color="primary" className="new-chat-btn" onClick={createNewChat}>
+              <Fab 
+                size="small" 
+                color="primary" 
+                className="new-chat-btn" 
+                onClick={createNewChat}
+                type="button"
+              >
                 <AddIcon />
               </Fab>
-              {chatHistory.length > 0 && (
-                <Fab 
-                  size="small" 
-                  color="error" 
-                  className="delete-chat-btn" 
-                  onClick={deleteChat}
-                  title="Delete all chat history"
-                >
-                  <DeleteIcon />
-                </Fab>
-              )}
             </Box>
           </Box>
           
@@ -391,6 +492,7 @@ const AIPlanner = () => {
                   key={chat.id}
                   className={`chat-history-item ${chat.active ? 'active' : ''}`}
                   onClick={() => handleChatSelect(chat.id)}
+                  sx={{ position: 'relative' }}
                 >
                   <ListItemAvatar>
                     <Avatar className="chat-avatar">
@@ -410,6 +512,33 @@ const AIPlanner = () => {
                       </Box>
                     }
                   />
+                  <Box 
+                    className="chat-item-actions"
+                    onClick={(e) => e.stopPropagation()}
+                    sx={{ 
+                      position: 'absolute', 
+                      right: '8px', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)',
+                      opacity: 0,
+                      transition: 'opacity 0.2s ease'
+                    }}
+                  >
+                    <IconButton
+                      size="small"
+                      className="delete-individual-chat-btn"
+                      onClick={() => deleteIndividualChat(chat.id)}
+                      title="Delete this chat"
+                      sx={{
+                        color: '#f44336',
+                        '&:hover': {
+                          backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        }
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
                 </ListItem>
               ))
             )}
@@ -456,7 +585,12 @@ const AIPlanner = () => {
                 )}
                 <Box className="message-content">
                   <Paper className="message-bubble" elevation={1}>
-                    <Typography variant="body1">{message.text}</Typography>
+                    <div className="formatted-message">
+                      {message.sender === 'ai' ? 
+                        <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} /> :
+                        <Typography variant="body1">{message.text}</Typography>
+                      }
+                    </div>
                   </Paper>
                   <Typography variant="caption" className="message-timestamp">
                     {message.timestamp}
@@ -480,6 +614,39 @@ const AIPlanner = () => {
               </Box>
             )}
             <div ref={messagesEndRef} />
+          </Box>
+
+          {/* Quick Prompts */}
+          <Box className="quick-prompts-container" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary', fontWeight: 600 }}>
+              Quick Prompts:
+            </Typography>
+            <Box className="quick-prompts" sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {[
+                "Can you give me the direction to Imago Shopping Mall?",
+                "Give me an itinerary for 3 days trip with a budget of RM5000",
+                "Where can I find halal mee sup?",
+                "Which restaurant can I enjoy the best seafood in Kota Kinabalu?",
+                "Where can I watch the sunset in KK?"
+              ].map((prompt, index) => (
+                <Chip
+                  key={index}
+                  label={prompt}
+                  onClick={() => setInputMessage(prompt)}
+                  className="quick-prompt-chip"
+                  sx={{
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'primary.main',
+                      color: 'white',
+                      transform: 'translateY(-1px)',
+                      boxShadow: 2
+                    }
+                  }}
+                />
+              ))}
+            </Box>
           </Box>
 
           {/* Input Area */}
