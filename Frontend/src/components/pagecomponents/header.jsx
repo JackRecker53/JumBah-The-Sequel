@@ -72,7 +72,11 @@ const Header = ({ onSidebarToggle }) => {
     <AppBar
       position="fixed"
       className="header-appbar"
-      sx={{ zIndex: theme.zIndex.drawer + 1 }}
+      sx={{ 
+        zIndex: theme.zIndex.drawer + 1,
+        background: '#0085D7 !important',
+        backgroundColor: '#0085D7 !important'
+      }}
     >
       <Toolbar className="header-toolbar">
         {/* Logo Section - Positioned absolutely on the left */}

@@ -94,7 +94,8 @@ const About = () => {
                     sx={{
                       fontWeight: 'bold',
                       fontSize: { xs: '2.5rem', md: '3.5rem' },
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                      color: 'white'
                     }}
                   >
                     About JumBah
@@ -274,7 +275,7 @@ const About = () => {
       {/* Call to Action */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #2d5016 0%, #7cb342 100%)',
+          background: '#0085D7',
           color: 'white',
           py: 8,
           textAlign: 'center'

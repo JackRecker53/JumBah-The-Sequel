@@ -9,9 +9,20 @@
 
 /* AppBar Styles */
 .header-appbar {
-  background: #77cbfe !important;
-  box-shadow: 0 4px 20px rgba(119, 203, 254, 0.3) !important;
+  background: #0085D7 !important;
+  box-shadow: 0 4px 20px rgba(0, 133, 215, 0.3) !important;
   position: fixed !important;
+}
+
+/* Override Material-UI AppBar styles */
+.MuiAppBar-root.header-appbar {
+  background: #0085D7 !important;
+  background-color: #0085D7 !important;
+}
+
+.MuiAppBar-colorPrimary.header-appbar {
+  background: #0085D7 !important;
+  background-color: #0085D7 !important;
 }
 
 /* Pulse Animation */
@@ -118,7 +129,7 @@
   background: linear-gradient(
     45deg,
     #f5362e,
-    #77cbfe,
+    #0085D7,
     #0484d6,
     #072b80
   ) !important;
@@ -130,7 +141,7 @@
   background: linear-gradient(
     45deg,
     #f5362e,
-    #77cbfe,
+    #0085D7,
     #0484d6,
     #072b80
   ) !important;
