@@ -9,20 +9,20 @@
 
 /* AppBar Styles */
 .header-appbar {
-  background: #0085D7 !important;
-  box-shadow: 0 4px 20px rgba(0, 133, 215, 0.3) !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
   position: fixed !important;
 }
 
 /* Override Material-UI AppBar styles */
 .MuiAppBar-root.header-appbar {
-  background: #0085D7 !important;
-  background-color: #0085D7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .MuiAppBar-colorPrimary.header-appbar {
-  background: #0085D7 !important;
-  background-color: #0085D7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 /* Pulse Animation */
@@ -100,7 +100,7 @@
 }
 
 .header-tabs .MuiTab-root {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: #333333 !important;
   font-weight: 600 !important;
   text-transform: none !important;
   font-size: 0.9rem !important;
@@ -114,14 +114,26 @@
 }
 
 .header-tabs .MuiTab-root:hover {
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #0085D7 !important;
+  background-color: rgba(0, 133, 215, 0.1) !important;
+}
+
+.header-tabs .MuiTab-root .MuiSvgIcon-root {
+  color: #333333 !important;
+}
+
+.header-tabs .MuiTab-root:hover .MuiSvgIcon-root {
+  color: #333333 !important;
 }
 
 .header-tabs .MuiTab-root.Mui-selected {
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  color: #0085D7 !important;
+  background-color: rgba(0, 133, 215, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 133, 215, 0.15) !important;
+}
+
+.header-tabs .MuiTab-root.Mui-selected .MuiSvgIcon-root {
+  color: #333333 !important;
 }
 
 /* Highlighted Tab (AI Planner) */
@@ -165,11 +177,11 @@
 
 /* Menu Button */
 .header-menu-button {
-  color: white !important;
+  color: #0085D7 !important;
 }
 
 .header-menu-button:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(0, 133, 215, 0.1) !important;
 }
 
 .header-menu-icon {

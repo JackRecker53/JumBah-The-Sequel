@@ -2,10 +2,12 @@
 
 /* Main Footer Container */
 .footer-container {
-  background-color: #77cbfe !important;
-  color: white !important;
+  background-color: #ffffff !important;
+  color: #333333 !important;
   padding-top: 48px !important;
   padding-bottom: 48px !important;
+  border-top: 1px solid #e0e0e0 !important;
+  position: relative !important;
 }
 
 /* Footer Content Container */
@@ -25,6 +27,7 @@
 .footer-section-heading {
   font-weight: 600 !important;
   margin-bottom: 16px !important;
+  color: #072b80 !important;
 }
 
 /* About Section Text */
@@ -67,8 +70,8 @@
 }
 
 .footer-social-button {
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #072b80 !important;
+  background-color: rgba(7, 43, 128, 0.1) !important;
   transition: background-color 0.3s ease !important;
 }
 
@@ -96,7 +99,7 @@
 .footer-divider {
   margin-top: 32px !important;
   margin-bottom: 32px !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Copyright Section */
@@ -106,4 +109,50 @@
 
 .footer-copyright-text {
   opacity: 0.8 !important;
+}
+
+/* WhatsApp Image Section */
+.footer-whatsapp-container {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 120px !important;
+  height: 120px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 10 !important;
+}
+
+.footer-whatsapp-image {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+  object-fit: cover !important;
+  display: block !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background: transparent !important;
+}
+
+.footer-whatsapp-image:hover {
+  opacity: 1 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsive adjustments for WhatsApp image */
+@media (max-width: 768px) {
+  .footer-whatsapp-container {
+    min-height: 100px !important;
+    margin-top: 16px !important;
+    justify-content: center !important;
+  }
+  
+  .footer-whatsapp-image {
+    max-width: 100px !important;
+    max-height: 100px !important;
+    width: 100px !important;
+  }
 }

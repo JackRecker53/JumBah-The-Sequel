@@ -47,7 +47,7 @@ const Sidebar = ({ open, onClose }) => {
       className="sidebar-drawer"
       sx={{
         '& .MuiDrawer-paper': {
-          background: 'linear-gradient(135deg, #072b80 0%, #0484d6 100%)',
+          background: '#ffffff',
         }
       }}
     >
@@ -59,7 +59,7 @@ const Sidebar = ({ open, onClose }) => {
             className="sidebar-logo"
           />
           <Typography variant="h6" className="sidebar-title">
-            Jumbah™
+            JumBah™
           </Typography>
         </Box>
         <IconButton onClick={onClose} className="sidebar-close-button">
@@ -121,10 +121,10 @@ const Sidebar = ({ open, onClose }) => {
       
       <Box className="sidebar-bottom">
           <Typography variant="body2" className="sidebar-bottom-text">
-            Jumbah
+            JumBah™
           </Typography>
           <Typography variant="caption" className="sidebar-bottom-subtitle">
-            Your Adventure Companion
+            Make Travelling Fun Again
           </Typography>
         </Box>
     </Drawer>

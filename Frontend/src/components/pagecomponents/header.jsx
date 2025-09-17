@@ -52,7 +52,12 @@ const Header = ({ onSidebarToggle }) => {
       description: "Discover experiences",
     },
     {
-      label: "AI Planner",
+      label: (
+        <span>
+          <span style={{ color: '#2D2C32' }}>Madu</span>
+          <span style={{ color: '#F1A33E' }}>AI</span>
+        </span>
+      ),
       value: "aiplanner",
       path: "/aiplanner",
       icon: <AutoAwesomeIcon />,
@@ -74,15 +79,15 @@ const Header = ({ onSidebarToggle }) => {
       className="header-appbar"
       sx={{ 
         zIndex: theme.zIndex.drawer + 1,
-        background: '#0085D7 !important',
-        backgroundColor: '#0085D7 !important'
+        background: '#ffffff !important',
+        backgroundColor: '#ffffff !important'
       }}
     >
       <Toolbar className="header-toolbar">
         {/* Logo Section - Positioned absolutely on the left */}
         <Box className="header-logo-container" onClick={() => navigate("/")}>
           <img
-            src="./src/assets/images/jumbahlogov2-removebg-preview.png"
+            src="./src/assets/images/jumbahlogo-with-borders.png"
             alt="Jumbah Logo"
             className="header-logo"
           />

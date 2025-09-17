@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
+import Footer from '../components/pagecomponents/footer';
 import jumbahLogo from '../assets/images/jumbah-logo-orangutan.svg';
 
 const About = () => {
@@ -119,18 +120,19 @@ const About = () => {
                 <Box
                   sx={{
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-end',
                     alignItems: 'center'
                   }}
                 >
                   <img
-                    src={jumbahLogo}
-                    alt="JumBah Logo"
+                    src="./src/assets/images/WhatsApp Image 2025-09-04 at 14.30.49_b8a2ae6d.jpg"
+                    alt="Location Pin Background"
                     style={{
                       maxWidth: '100%',
                       height: 'auto',
                       maxHeight: '400px',
-                      filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))'
+                      filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))',
+                      borderRadius: '12px'
                     }}
                   />
                 </Box>
@@ -329,6 +331,7 @@ const About = () => {
           </Box>
         </Container>
       </Box>
+      <Footer />
     </Box>
   );
 };

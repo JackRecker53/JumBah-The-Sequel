@@ -22,23 +22,7 @@ const Footer = () => {
     <Box className="footer-container">
       <Box className="footer-content">
         <Grid container spacing={4}>
-          {/* About Jumbah */}
-          {/* <Grid item xs={12} md={4}>
-            <Typography variant="h6" className="footer-section-heading">
-              About Jumbah
-            </Typography>
-            <Typography variant="body2" className="footer-about-text">
-              Jumbah is your ultimate guide to discovering the beauty and culture of Sabah. 
-              From majestic Mount Kinabalu to pristine diving spots, we help you explore 
-              the Land Below the Wind.
-            </Typography>
-            <Typography variant="body2" className="footer-about-text-secondary">
-              Experience authentic Sabahan adventures with our AI-powered planning tools 
-              and local expertise.
-            </Typography>
-          </Grid> */}
-
-          {/* Practical Information */}
+          {/* Left Side - Practical Information */}
           <Grid item xs={12} md={4}>
             <Typography variant="h6" className="footer-section-heading">
               Practical Information
@@ -60,7 +44,7 @@ const Footer = () => {
             </Typography>
           </Grid>
 
-          {/* Social Media */}
+          {/* Middle - Social Media */}
           <Grid item xs={12} md={4}>
             <Typography variant="h6" className="footer-section-heading">
               Follow Us
@@ -81,6 +65,17 @@ const Footer = () => {
               <IconButton className="footer-social-button">
                 <YouTube />
               </IconButton>
+            </Box>
+          </Grid>
+
+          {/* Right Side - WhatsApp Image */}
+          <Grid item xs={12} md={4} sx={{ padding: '0 !important', margin: '0 !important' }}>
+            <Box className="footer-whatsapp-container">
+              <img 
+                src="./src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg" 
+                alt="WhatsApp Contact" 
+                className="footer-whatsapp-image"
+              />
             </Box>
           </Grid>
         </Grid>

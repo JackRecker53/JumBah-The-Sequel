@@ -791,10 +791,48 @@ const Map = () => {
 
     // Check if we have location data with coordinates
     if (!fromLocationData || !toLocationData) {
-      alert('Please select locations from the suggestions to plan a route');
-      return;
+      // Try to geocode the locations if they're not already set
+      try {
+        setRouteLoading(true);
+        
+        let fromCoords, toCoords;
+        
+        // Get from coordinates
+        if (fromLocationData) {
+          fromCoords = fromLocationData.position;
+        } else if (fromLocation === 'Current Location' && userLocation) {
+          fromCoords = [userLocation.lat, userLocation.lng];
+        } else {
+          fromCoords = await geocodeLocation(fromLocation);
+        }
+        
+        // Get to coordinates
+        if (toLocationData) {
+          toCoords = toLocationData.position;
+        } else {
+          toCoords = await geocodeLocation(toLocation);
+        }
+        
+        // Proceed with route planning using geocoded coordinates
+        await planRouteWithCoordinates(fromCoords, toCoords);
+        return;
+        
+      } catch (error) {
+        console.error('Geocoding error:', error);
+        alert('Unable to find coordinates for the specified locations. Please select locations from the suggestions or check your spelling.');
+        setRouteLoading(false);
+        return;
+      }
     }
 
+    // Use stored location coordinates
+    const fromCoords = fromLocationData.position;
+    const toCoords = toLocationData.position;
+    
+    await planRouteWithCoordinates(fromCoords, toCoords);
+  };
+
+  const planRouteWithCoordinates = async (fromCoords, toCoords) => {
     setRouteLoading(true);
     try {
       // Remove existing route if any
@@ -806,10 +844,6 @@ const Map = () => {
         }
         setRoutingControl(null);
       }
-
-      // Use stored location coordinates
-      const fromCoords = fromLocationData.position;
-      const toCoords = toLocationData.position;
       
       if (!mapRef.current) {
         throw new Error('Map not available');
@@ -899,11 +933,91 @@ const Map = () => {
   const handleUseCurrentLocation = () => {
     console.log('handleUseCurrentLocation called, userLocation:', userLocation);
     if (userLocation) {
+      console.log('Setting from location to Current Location with data:', {
+        name: 'Current Location',
+        position: [userLocation.lat, userLocation.lng],
+        type: 'GPS Location'
+      });
       setFromLocation('Current Location');
+      // Set the location data for route planning
+      setFromLocationData({
+        name: 'Current Location',
+        position: [userLocation.lat, userLocation.lng],
+        type: 'GPS Location'
+      });
+      // Clear any previous suggestions
+      setShowFromSuggestions(false);
+      setFromSuggestions([]);
     } else {
-      // Show message to user to enable location manually
-      console.log('Location not available. User needs to enable location manually.');
-      setLocationError('Please enable location access using the location button to use navigation features.');
+      // If location is not available, try to get it automatically
+      console.log('Location not available, attempting to get current location...');
+      getCurrentLocationForFrom();
+    }
+  };
+  
+  const getCurrentLocationForFrom = () => {
+    console.log('getCurrentLocationForFrom called');
+    if (navigator.geolocation) {
+      console.log('Geolocation is supported');
+      // Clear any previous errors
+      setLocationError(null);
+      
+      console.log('Calling navigator.geolocation.getCurrentPosition...');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const latlng = { lat: latitude, lng: longitude };
+          setUserLocation(latlng);
+          setLocationError(null);
+          
+          // Set the from location data immediately
+          setFromLocation('Current Location');
+          setFromLocationData({
+            name: 'Current Location',
+            position: [latitude, longitude],
+            type: 'GPS Location'
+          });
+          
+          if (mapRef.current) {
+            mapRef.current.setView([latitude, longitude], 13);
+          }
+          
+          console.log('Location found and set as from location:', latlng);
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          let errorMessage = 'Unable to get your location. ';
+          let suggestions = '';
+          
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage += 'Location access was denied.';
+              suggestions = 'Please: 1) Click the location icon in your browser\'s address bar, 2) Select "Allow" for location access, 3) Refresh the page and try again.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage += 'Your location could not be determined.';
+              suggestions = 'Please: 1) Check if location services are enabled on your device, 2) Try moving to an area with better GPS signal, 3) Refresh the page and try again.';
+              break;
+            case error.TIMEOUT:
+              errorMessage += 'Location request timed out.';
+              suggestions = 'Please try again. If the problem persists, check your internet connection.';
+              break;
+            default:
+              errorMessage += `An unknown error occurred (Code: ${error.code}).`;
+              suggestions = 'Please refresh the page and try again.';
+              break;
+          }
+          
+          setLocationError(`${errorMessage} ${suggestions}`);
+        },
+        {
+          enableHighAccuracy: false, // Changed to false for better compatibility
+          timeout: 15000, // Increased timeout
+          maximumAge: 300000 // 5 minutes cache
+        }
+      );
+    } else {
+      setLocationError('Geolocation is not supported by this browser. Please use a modern browser like Chrome, Firefox, or Safari.');
     }
   };
   
@@ -1088,6 +1202,12 @@ const Map = () => {
                   onClick={handleUseCurrentLocation}
                   size="small"
                   title="Use current location"
+                  sx={{
+                    color: userLocation ? '#4caf50' : '#1976d2',
+                    '&:hover': {
+                      backgroundColor: userLocation ? 'rgba(76, 175, 80, 0.1)' : 'rgba(25, 118, 210, 0.1)'
+                    }
+                  }}
                 >
                   <MyLocationIcon />
                 </IconButton>

@@ -26,7 +26,7 @@ import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
 import maduIcon from '../assets/images/madu-icon-C6gC6UIY.png';
 import apiService from '../services/api';
-import './AIPlanner.css';
+import './Styling/AIPlanner.css';
 
 const sabahanPrompts = [
   "MaduAI, bah. Pintar ni.",
@@ -50,43 +50,61 @@ const getRandomPrompt = () => sabahanPrompts[Math.floor(Math.random() * sabahanP
 const formatMessage = (text) => {
   if (!text) return '';
   
-  // Convert markdown-like formatting to HTML
+  // First, clean up unknown entities and add proper spacing around emojis
   let formatted = text
-    // Headers
-    .replace(/^## (.*$)/gim, '<h2 style="color: #1976d2; margin: 16px 0 8px 0; font-size: 1.2em; font-weight: 600;">$1</h2>')
-    .replace(/^### (.*$)/gim, '<h3 style="color: #424242; margin: 12px 0 6px 0; font-size: 1.1em; font-weight: 600;">$1</h3>')
-    .replace(/^#### (.*$)/gim, '<h4 style="color: #666; margin: 8px 0 4px 0; font-size: 1em; font-weight: 600;">$1</h4>')
+    // Remove unknown HTML entities
+    .replace(/&[a-zA-Z0-9#]+;/g, '')
+    // Add spaces around emojis for better readability
+    .replace(/([^\s])([📍💰⭐🕒🍽️🏆🎯💡🗺️📱📅🏛️💬🌤️🍜🥘🏔️🌊🏖️🌴🐒🦋🌺🎉✨])/g, '$1 $2')
+    .replace(/([📍💰⭐🕒🍽️🏆🎯💡🗺️📱📅🏛️💬🌤️🍜🥘🏔️🌊🏖️🌴🐒🦋🌺🎉✨])([^\s])/g, '$1 $2')
+    
+    // Convert markdown-like formatting to HTML
+    .replace(/^## (.*$)/gim, '<h2 class="ai-header-2">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 class="ai-header-3">$1</h3>')
+    .replace(/^#### (.*$)/gim, '<h4 class="ai-header-4">$1</h4>')
     
     // Bold text
-    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: #333;">$1</strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="ai-bold">$1</strong>')
     
     // Bullet points
-    .replace(/^• (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2;">•</span>$1</div>')
-    .replace(/^- (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2;">•</span>$1</div>')
+    .replace(/^• (.*$)/gim, '<div class="ai-bullet-point">• $1</div>')
+    .replace(/^- (.*$)/gim, '<div class="ai-bullet-point">• $1</div>')
     
     // Numbered lists
-    .replace(/^(\d+)\. (.*$)/gim, '<div style="margin: 4px 0; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #1976d2; font-weight: 600;">$1.</span>$2</div>')
+    .replace(/^(\d+)\. (.*$)/gim, '<div class="ai-numbered-point">$1. $2</div>')
     
     // Horizontal rules
-    .replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 16px 0;">')
+    .replace(/^---$/gim, '<hr class="ai-hr">')
     
     // Line breaks
     .replace(/\n/g, '<br>')
     
-    // Emojis and special formatting
-    .replace(/📍/g, '<span style="color: #4caf50;">📍</span>')
-    .replace(/💰/g, '<span style="color: #ff9800;">💰</span>')
-    .replace(/⭐/g, '<span style="color: #ffc107;">⭐</span>')
-    .replace(/🕒/g, '<span style="color: #2196f3;">🕒</span>')
-    .replace(/🍽️/g, '<span style="color: #e91e63;">🍽️</span>')
-    .replace(/🏆/g, '<span style="color: #9c27b0;">🏆</span>')
-    .replace(/🎯/g, '<span style="color: #f44336;">🎯</span>')
-    .replace(/💡/g, '<span style="color: #ffeb3b;">💡</span>')
-    .replace(/🗺️/g, '<span style="color: #00bcd4;">🗺️</span>')
-    .replace(/📱/g, '<span style="color: #607d8b;">📱</span>')
-    .replace(/📅/g, '<span style="color: #795548;">📅</span>')
-    .replace(/🏛️/g, '<span style="color: #3f51b5;">🏛️</span>')
-    .replace(/💬/g, '<span style="color: #009688;">💬</span>');
+    // Emojis with proper spacing
+    .replace(/📍/g, '<span class="ai-emoji emoji-location">📍</span>')
+    .replace(/💰/g, '<span class="ai-emoji emoji-money">💰</span>')
+    .replace(/⭐/g, '<span class="ai-emoji emoji-star">⭐</span>')
+    .replace(/🕒/g, '<span class="ai-emoji emoji-time">🕒</span>')
+    .replace(/🍽️/g, '<span class="ai-emoji emoji-food">🍽️</span>')
+    .replace(/🏆/g, '<span class="ai-emoji emoji-trophy">🏆</span>')
+    .replace(/🎯/g, '<span class="ai-emoji emoji-target">🎯</span>')
+    .replace(/💡/g, '<span class="ai-emoji emoji-idea">💡</span>')
+    .replace(/🗺️/g, '<span class="ai-emoji emoji-map">🗺️</span>')
+    .replace(/📱/g, '<span class="ai-emoji emoji-phone">📱</span>')
+    .replace(/📅/g, '<span class="ai-emoji emoji-calendar">📅</span>')
+    .replace(/🏛️/g, '<span class="ai-emoji emoji-building">🏛️</span>')
+    .replace(/💬/g, '<span class="ai-emoji emoji-chat">💬</span>')
+    .replace(/🌤️/g, '<span class="ai-emoji emoji-weather">🌤️</span>')
+    .replace(/🍜/g, '<span class="ai-emoji emoji-noodle">🍜</span>')
+    .replace(/🥘/g, '<span class="ai-emoji emoji-pot">🥘</span>')
+    .replace(/🏔️/g, '<span class="ai-emoji emoji-mountain">🏔️</span>')
+    .replace(/🌊/g, '<span class="ai-emoji emoji-wave">🌊</span>')
+    .replace(/🏖️/g, '<span class="ai-emoji emoji-beach">🏖️</span>')
+    .replace(/🌴/g, '<span class="ai-emoji emoji-palm">🌴</span>')
+    .replace(/🐒/g, '<span class="ai-emoji emoji-monkey">🐒</span>')
+    .replace(/🦋/g, '<span class="ai-emoji emoji-butterfly">🦋</span>')
+    .replace(/🌺/g, '<span class="ai-emoji emoji-flower">🌺</span>')
+    .replace(/🎉/g, '<span class="ai-emoji emoji-celebration">🎉</span>')
+    .replace(/✨/g, '<span class="ai-emoji emoji-sparkle">✨</span>');
   
   return formatted;
 };
@@ -218,6 +236,11 @@ const AIPlanner = () => {
     setChatHistory(updatedHistory);
     setCurrentChatId(newChatId);
     setMessages(newChat.messages);
+    
+    // Scroll to bottom of chat history to show new chat
+    setTimeout(() => {
+      scrollToBottomOfHistory();
+    }, 100);
     
     console.log('New chat created:', newChatId);
   };
@@ -357,11 +380,23 @@ const AIPlanner = () => {
   }, []);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  };
+
+  const scrollToBottomOfHistory = () => {
+    const historyList = document.querySelector('.chat-history-list');
+    if (historyList) {
+      historyList.scrollTop = historyList.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Use setTimeout to ensure DOM is updated before scrolling
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
   }, [messages]);
 
   const handleSendMessage = async () => {
@@ -441,7 +476,7 @@ const AIPlanner = () => {
       <Header onSidebarToggle={handleSidebarToggle} />
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
-      <Box className="ai-planner-container">
+      <Box className="ai-planner-container" sx={{ flex: 1 }}>
         {/* Chat History Sidebar */}
         <Paper className="chat-history-sidebar" elevation={2}>
           <Box className="chat-history-header">
@@ -542,6 +577,7 @@ const AIPlanner = () => {
                 </ListItem>
               ))
             )}
+            <div style={{ marginTop: 'auto', height: '1px' }} />
           </List>
         </Paper>
 
@@ -564,7 +600,7 @@ const AIPlanner = () => {
                     className={isBackendOnline ? "online-status" : "offline-status"} 
                   />
                   <Typography variant="caption" className="status-text">
-                    {isBackendOnline ? "Ready to help with your adventures!" : "Backend unavailable"}
+                    {isBackendOnline ? "Ah, hidup si MaduAI!" : "Alaa, MaduAI Tertidur"}
                   </Typography>
                 </Box>
               </Box>
@@ -613,7 +649,7 @@ const AIPlanner = () => {
                 </Box>
               </Box>
             )}
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} className="scroll-anchor" />
           </Box>
 
           {/* Quick Prompts */}
@@ -625,7 +661,7 @@ const AIPlanner = () => {
               {[
                 "Can you give me the direction to Imago Shopping Mall?",
                 "Give me an itinerary for 3 days trip with a budget of RM5000",
-                "Where can I find halal mee sup?",
+                "Where can I find mee sup yang halal?",
                 "Which restaurant can I enjoy the best seafood in Kota Kinabalu?",
                 "Where can I watch the sunset in KK?"
               ].map((prompt, index) => (
