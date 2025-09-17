@@ -4,7 +4,7 @@
     "title": "Gaya Street Explorer",
     "district": "kk",
     "type": "qr",
-    "image": "./src/assets/images/KK.jpeg",
+    "image": "./src/assets/images/Gaya Street-gaming.jpg",
     "reward": {
       "type": "stamp",
       "name": "Gaya Scout"
@@ -29,7 +29,7 @@
     "title": "Market Hunt",
     "district": "kk",
     "type": "qr",
-    "image": "./src/assets/images/KK.jpeg",
+    "image": "./src/assets/images/pasar filipina.jpg",
     "reward": {
       "type": "stamp",
       "name": "Market Maven"
@@ -42,7 +42,7 @@
     "title": "Sabah Phrase Challenge",
     "district": "kk",
     "type": "audio",
-    "image": "./src/assets/images/KK.jpeg",
+    "image": "./src/assets/images/onsoi.jpg",
     "reward": {
       "type": "stamp",
       "name": "Language Learner"
@@ -105,7 +105,7 @@
     "title": "Sabahan Culture Quiz",
     "district": "kk",
     "type": "trivia",
-    "image": "./src/assets/images/WhatsApp Image 2025-07-02 at 17.29.01_1189cec1.jpg",
+    "image": "./src/assets/images/sabahan speech.jpg",
     "reward": {
       "type": "stamp",
       "name": "Culture Keeper"
