@@ -23,7 +23,7 @@ const Footer = () => {
       <Box className="footer-content">
         <Grid container spacing={4}>
           {/* About Jumbah */}
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
             <Typography variant="h6" className="footer-section-heading">
               About Jumbah
             </Typography>
@@ -36,7 +36,7 @@ const Footer = () => {
               Experience authentic Sabahan adventures with our AI-powered planning tools 
               and local expertise.
             </Typography>
-          </Grid>
+          </Grid> */}
 
           {/* Practical Information */}
           <Grid item xs={12} md={4}>

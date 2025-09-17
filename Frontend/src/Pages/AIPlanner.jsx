@@ -555,7 +555,7 @@ const AIPlanner = () => {
               </Avatar>
               <Box className="chat-info">
                 <Typography variant="h6" className="chat-title">
-                  MaduAI: Your personal Guide, tapi yang boleh sembang macam kawan-kawan
+                  MaduAI: Your personal Guide, tapi yang boleh bekurapak macam kawan-kawan
                 </Typography>
                 <Box className="status-container">
                   <Chip 

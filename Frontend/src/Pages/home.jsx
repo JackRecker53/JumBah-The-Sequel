@@ -200,14 +200,14 @@ const Home = () => {
       description: 'Local cuisine and dining experiences',
       image: mari2Image,
       size: 'small',
-      gridArea: '5 / 3 / 6 / 4'
+      gridArea: '3 / 3 / 4 / 4'
     },
     { 
       name: 'Places to stay', 
       description: 'Hotels and accommodations',
       image: tanjungAruImage,
       size: 'small',
-      gridArea: '5 / 1 / 6 / 2'
+      gridArea: '4 / 3 / 5 / 4'
     }
   ];
 
@@ -498,15 +498,15 @@ const Home = () => {
             sx={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              gridTemplateRows: 'repeat(5, 200px)',
+              gridTemplateRows: 'repeat(4, 200px)',
               gap: 2,
               '@media (max-width: 768px)': {
                 gridTemplateColumns: 'repeat(2, 1fr)',
-                gridTemplateRows: 'repeat(8, 150px)',
+                gridTemplateRows: 'repeat(6, 150px)',
               },
               '@media (max-width: 480px)': {
                 gridTemplateColumns: '1fr',
-                gridTemplateRows: 'repeat(10, 200px)',
+                gridTemplateRows: 'repeat(8, 200px)',
               }
             }}
           >
