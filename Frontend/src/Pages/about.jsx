@@ -24,7 +24,7 @@ import {
 import Header from '../components/pagecomponents/header';
 import Sidebar from '../components/pagecomponents/sidebar';
 import Footer from '../components/pagecomponents/footer';
-import jumbahLogo from '../assets/images/jumbah-logo-orangutan.svg';
+import './Styling/about.css';
 
 const About = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,20 +69,12 @@ const About = () => {
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box className="about-container">
       <Header onSidebarToggle={handleSidebarToggle} />
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Hero Section */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, #072b80 0%, #0484d6 50%, #7cb342 100%)',
-          color: 'white',
-          py: { xs: 8, md: 12 },
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
+      <Box className={`hero-section ${isMobile ? 'hero-section-mobile' : 'hero-section-desktop'}`}>
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -92,23 +84,13 @@ const About = () => {
                     variant="h2"
                     component="h1"
                     gutterBottom
-                    sx={{
-                      fontWeight: 'bold',
-                      fontSize: { xs: '2.5rem', md: '3.5rem' },
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-                      color: 'white'
-                    }}
+                    className={`hero-title ${isMobile ? 'hero-title-mobile' : 'hero-title-desktop'}`}
                   >
                     About JumBah
                   </Typography>
                   <Typography
                     variant="h5"
-                    sx={{
-                      mb: 3,
-                      opacity: 0.9,
-                      lineHeight: 1.6,
-                      fontSize: { xs: '1.1rem', md: '1.3rem' }
-                    }}
+                    className={`hero-subtitle ${isMobile ? 'hero-subtitle-mobile' : 'hero-subtitle-desktop'}`}
                   >
                     Your Adventure Companion in Sabah
                   </Typography>
@@ -117,24 +99,8 @@ const About = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Fade in timeout={1500}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}
-                >
-                  <img
-                    src="./src/assets/images/WhatsApp Image 2025-09-04 at 14.30.49_b8a2ae6d.jpg"
-                    alt="Location Pin Background"
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                      maxHeight: '400px',
-                      filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))',
-                      borderRadius: '12px'
-                    }}
-                  />
+                <Box className="hero-image-container">
+                  {/* Logo removed as requested */}
                 </Box>
               </Fade>
             </Grid>
@@ -142,47 +108,27 @@ const About = () => {
         </Container>
         
         {/* Decorative elements */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '10%',
-            right: '5%',
-            opacity: 0.1,
-            fontSize: '200px',
-            transform: 'rotate(15deg)'
-          }}
-        >
+        <Box className="decorative-icon">
           <LocationOn sx={{ fontSize: 'inherit' }} />
         </Box>
       </Box>
 
       {/* Mission Statement */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" className="mission-container">
         <Fade in timeout={2000}>
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Box className="mission-content">
             <Typography
               variant="h3"
               component="h2"
               gutterBottom
-              sx={{
-                fontWeight: 'bold',
-                color: '#2d5016',
-                mb: 4,
-                fontSize: { xs: '2rem', md: '2.5rem' }
-              }}
+              className={`mission-title ${isMobile ? 'mission-title-mobile' : 'mission-title-desktop'}`}
             >
               Our Mission
             </Typography>
             <Typography
               variant="h6"
-              sx={{
-                maxWidth: '800px',
-                mx: 'auto',
-                lineHeight: 1.8,
-                color: '#555',
-                fontSize: { xs: '1.1rem', md: '1.25rem' },
-                fontStyle: 'italic'
-              }}
+              className={`mission-text ${isMobile ? 'mission-text-mobile' : 'mission-text-desktop'}`}
+              sx={{ textAlign: 'center', display: 'block', width: '100%' }}
             >
               "At JumBah, we turn exploring Sabah into an adventure. Discover 
               attractions, culture, and events through an interactive, gamified 
@@ -198,70 +144,37 @@ const About = () => {
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ bgcolor: '#f8f9fa', py: 8 }}>
+      <Box className="features-section">
         <Container maxWidth="lg">
           <Typography
             variant="h3"
             component="h2"
             gutterBottom
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              color: '#2d5016',
-              mb: 6,
-              fontSize: { xs: '2rem', md: '2.5rem' }
-            }}
+            className={`features-title ${isMobile ? 'features-title-mobile' : 'features-title-desktop'}`}
           >
             What Makes JumBah Special
           </Typography>
           
-          <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
+          <Grid container spacing={4} className="features-grid">
             {features.map((feature, index) => (
               <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                 <Fade in timeout={1000 + index * 200}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-                      },
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column'
-                    }}
-                  >
-                    <CardContent sx={{ p: 4, textAlign: 'center', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                      <Box
-                        sx={{
-                          color: '#072b80',
-                          mb: 2,
-                          display: 'flex',
-                          justifyContent: 'center'
-                        }}
-                      >
+                  <Card className="feature-card">
+                    <CardContent className="feature-card-content">
+                      <Box className="feature-icon">
                         {feature.icon}
                       </Box>
                       <Typography
                         variant="h5"
                         component="h3"
                         gutterBottom
-                        sx={{
-                          fontWeight: 'bold',
-                          color: '#2d5016',
-                          mb: 2
-                        }}
+                        className="feature-title"
                       >
                         {feature.title}
                       </Typography>
                       <Typography
                         variant="body1"
-                        sx={{
-                          color: '#666',
-                          lineHeight: 1.6
-                        }}
+                        className="feature-description"
                       >
                         {feature.description}
                       </Typography>
@@ -275,56 +188,29 @@ const About = () => {
       </Box>
 
       {/* Call to Action */}
-      <Box
-        sx={{
-          background: '#0085D7',
-          color: 'white',
-          py: 8,
-          textAlign: 'center'
-        }}
-      >
+      <Box className="cta-section">
         <Container maxWidth="md">
           <Typography
             variant="h3"
             component="h2"
             gutterBottom
-            sx={{
-              fontWeight: 'bold',
-              mb: 3,
-              fontSize: { xs: '2rem', md: '2.5rem' }
-            }}
+            className={`cta-title ${isMobile ? 'cta-title-mobile' : 'cta-title-desktop'}`}
           >
             Ready to Explore Sabah?
           </Typography>
           <Typography
             variant="h6"
-            sx={{
-              mb: 4,
-              opacity: 0.9,
-              fontSize: { xs: '1.1rem', md: '1.25rem' }
-            }}
+            className={`cta-subtitle ${isMobile ? 'cta-subtitle-mobile' : 'cta-subtitle-desktop'}`}
           >
             Join thousands of adventurers who have discovered the magic of Sabah through JumBah
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Box className="cta-buttons">
             <Button
               variant="contained"
               size="large"
               startIcon={<Explore />}
               onClick={() => window.location.href = '/'}
-              sx={{
-                background: 'linear-gradient(135deg, #072b80 0%, #0484d6 50%, #7cb342 100%)',
-                color: 'white',
-                px: 4,
-                py: 1.5,
-                fontSize: '1.1rem',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #051f5c 0%, #0369a8 50%, #5a8f2f 100%)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 25px rgba(7,43,128,0.4)'
-                },
-                transition: 'all 0.3s ease'
-              }}
+              className="cta-button"
             >
               Start Exploring
             </Button>
